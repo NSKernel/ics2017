@@ -7,6 +7,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+extern CPU_state cpu;
+
+uint32_t expr(char *e, bool *success);
+
 void cpu_exec(uint64_t);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -36,6 +40,24 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char *args) {
+  char *arg = strtok(NULL, " ");
+  int i;
+
+  if (arg == NULL) {
+    cpu_exec(1);
+  }
+  else {
+    i = atoi(args);
+    if(i < 0) {
+        printf("Exception: Unexpected instruction count \'%s\'.\n", arg);
+    }
+    else
+        cpu_exec(i);
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -46,6 +68,7 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
+  { "si", "N - Step in for N steps", cmd_si },
 
   /* TODO: Add more commands */
 
