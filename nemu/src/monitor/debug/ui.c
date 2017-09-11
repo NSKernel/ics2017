@@ -58,6 +58,29 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+static int cmd_info(char *args) {
+  char *arg = strtok(NULL, " ");
+  int i;
+
+  if (arg == NULL) {
+    printf("Exception: Subcommand SUBCMD is required.\n");
+  }
+  else {
+    if (strcmp(arg, "r") == 0) {
+      for (i = 0; i < 8; i++) {
+        printf("%s: 0x%08X\n", reg_name(i, 4), reg_l(i));
+      }
+    }
+    else if (strcmp(arg, "w") == 0) {
+      printf("DEBUG: Watchpoint unimplemented.\n");
+    }
+    else {
+      printf("Exception: Unknown subcommand \'%s\'.\n", arg);
+    }
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -69,7 +92,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "N - Step in for N steps", cmd_si },
-
+  { "info", "SUBCMD - Provide program status. SUBCMD = r or w", cmd_info },
+  
   /* TODO: Add more commands */
 
 };
