@@ -117,9 +117,9 @@ static int cmd_x(char *args) {
     if (N <= 0)
       printf("Exception: N must be greater than 0.\n");
     else {
-      Add = 0x100000;
-      success = true;
-      // Add = expr(exp, &success);
+      // Add = 0x100000;
+      // success = true;
+      Add = expr(exp, &success);
       if (!success)
         printf("Exception: Unexpected address \'%s\'.\n", args + strlen(arg) + 1);
       else {
