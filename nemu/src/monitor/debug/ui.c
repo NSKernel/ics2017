@@ -81,6 +81,79 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_p(char *args) {
+  char *arg = strtok(NULL, " ");
+  uint32_t i;
+  bool success;
+
+
+  if (arg == NULL) {
+    printf("Exception: Expression field EXPR is required.\n");
+  }
+  else {
+    i = expr(args, &success);
+    if (success)
+      printf("Result = %d\n", i);
+  }
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  char *arg = strtok(NULL, " ");
+  uint32_t N;
+  uint32_t Add;
+  char *exp = strtok(NULL, " ");  
+  bool success;
+  uint32_t MemContent;
+  bool IsFirst = true;
+  unsigned char ByteNow;
+
+  N = atoi(arg);
+
+  if (arg == NULL || exp == NULL) {
+    printf("Exception: Count field N and Expression field EXPR is required.\n");
+  }
+  else {
+    if (N <= 0)
+      printf("Exception: N must be greater than 0.\n");
+    else {
+      Add = 0x100000;
+      success = true;
+      // Add = expr(exp, &success);
+      if (!success)
+        printf("Exception: Unexpected address \'%s\'.\n", args + strlen(arg) + 1);
+      else {
+        printf("%d byte(s) of memory mapped from 0x%08X:\n\n", 4 * N, Add);
+        printf("            00 01 02 03 04 05 06 07\n\n");
+        while (N--) {
+          MemContent = vaddr_read(Add, 4);
+          if (IsFirst) {
+            printf("0x%08X  ", Add);
+          }
+          ByteNow = MemContent & 0xFF;
+          printf("%02X ", ByteNow);
+          MemContent = MemContent >> 2;
+          ByteNow = MemContent & 0xFF;
+          printf("%02X ", ByteNow);
+          MemContent = MemContent >> 2;
+          ByteNow = MemContent & 0xFF;
+          printf("%02X ", ByteNow);
+          MemContent = MemContent >> 2;
+          ByteNow = MemContent & 0xFF;
+          printf("%02X ", ByteNow);
+          if (!IsFirst)
+              printf("\n");
+          IsFirst = !IsFirst;
+          Add += 4;
+        }
+      }
+      if (!IsFirst)
+        printf("\n");
+    }
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -93,6 +166,11 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "N - Step in for N steps", cmd_si },
   { "info", "SUBCMD - Provide program status. SUBCMD = r or w", cmd_info },
+  { "p", "EXPR - Evaluate expression", cmd_p },
+  { "x", "N EXPR - Output 4N bytes from the address evaluated form EXPR", cmd_x }
+  // { "w", "EXPR - Set a watchpoint at the address evaluated from EXPR", cmd_w }
+  // { "d", "N - Delete the watchpoint numbered N", cmd_d }
+
   
   /* TODO: Add more commands */
 
