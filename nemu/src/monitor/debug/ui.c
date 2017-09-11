@@ -132,13 +132,13 @@ static int cmd_x(char *args) {
           }
           ByteNow = MemContent & 0xFF;
           printf("%02X ", ByteNow);
-          MemContent = MemContent >> 2;
+          MemContent = MemContent >> 8;
           ByteNow = MemContent & 0xFF;
           printf("%02X ", ByteNow);
-          MemContent = MemContent >> 2;
+          MemContent = MemContent >> 8;
           ByteNow = MemContent & 0xFF;
           printf("%02X ", ByteNow);
-          MemContent = MemContent >> 2;
+          MemContent = MemContent >> 8;
           ByteNow = MemContent & 0xFF;
           printf("%02X ", ByteNow);
           if (!IsFirst)
