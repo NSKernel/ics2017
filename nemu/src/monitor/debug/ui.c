@@ -111,12 +111,11 @@ static int cmd_x(char *args) {
   bool IsFirst = true;
   unsigned char ByteNow;
 
-  N = atoi(arg);
-
   if (arg == NULL || exp == NULL) {
     printf("Exception: Count field N and Expression field EXPR is required.\n");
   }
   else {
+    N = atoi(arg);
     if (N <= 0)
       printf("Exception: N must be greater than 0.\n");
     else {
