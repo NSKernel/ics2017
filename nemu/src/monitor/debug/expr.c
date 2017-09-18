@@ -40,6 +40,7 @@ static struct rule {
 
   {"[0-9]+", TK_DECNUM}, 
   {"0x[0-9a-fA-F]+", TK_HEXNUM},
+  {"\\$[a-z]+", TK_REGNAME},
   {" +", TK_NOTYPE},    // spaces
   {"\\!", '!'},         // not
   {"\\(", '('},         // left parenthese
@@ -244,6 +245,7 @@ uint32_t eval(int p, int q, bool *success) {
   int domop;
   uint32_t val1;
  // uint32_t val2;
+  int i;
   
   if (p > q) {
     printf("Exception: ");
@@ -258,6 +260,17 @@ uint32_t eval(int p, int q, bool *success) {
     if (tokens[p].type == TK_REGNAME) {
       if (!strcmp(tokens[p].str, "$eip"))
         return cpu.eip;
+      for (i = 0; i < 8; i++) {
+        if (!strcmp(tokens[p].str + 1, reg_name(i, 4))) {
+          return reg_l(i);
+        }
+        if (!strcmp(tokens[p].str + 1, reg_name(i, 2))) {
+          return reg_w(i);
+        }
+        if (!strcmp(tokens[p].str + 1, reg_name(i, 1))) {
+          return reg_b(i);
+        }
+      }
     }
     *success = false;
     return 0;
