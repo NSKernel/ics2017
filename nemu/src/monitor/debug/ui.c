@@ -94,7 +94,7 @@ static int cmd_p(char *args) {
   else {
     i = expr(args, &success);
     if (success)
-      printf("Result = %d\n", i);
+      printf("Result = %d\n\n       = 0x%08X\n", i, i);
   }
   return 0;
 }
