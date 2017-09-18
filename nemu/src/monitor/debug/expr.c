@@ -109,7 +109,7 @@ static bool make_token(char *e) {
          */
         
         // Don't have to handle spaces.
-        if (rules[i].token_type != TK_NOTYPE)
+        if (rules[i].token_type == TK_NOTYPE)
           break;
          
         if (substr_len >= 32) {
