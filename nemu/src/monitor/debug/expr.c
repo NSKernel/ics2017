@@ -379,5 +379,6 @@ uint32_t expr(char *e, bool *success) {
       tokens[i].type = TK_NEG;
   }
   
+  printf("eval p = %d, q = %d\n", 0, nr_token - 1);
   return eval(0, nr_token - 1, success);
 }
