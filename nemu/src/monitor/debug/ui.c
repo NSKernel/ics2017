@@ -83,20 +83,17 @@ static int cmd_info(char *args) {
 
 static int cmd_p(char *args) {
   char *arg = strtok(NULL, " ");
-  // uint32_t i;
-  // bool success;
+  uint32_t i;
+  bool success;
 
 
   if (arg == NULL) {
     printf("Exception: Expression field EXPR is required.\n");
   }
   else {
-    printf("DEBUG: EXPR unimplemented.");
-    /*
     i = expr(args, &success);
     if (success)
       printf("Result = %d\n", i);
-    */
   }
   return 0;
 }
@@ -119,11 +116,7 @@ static int cmd_x(char *args) {
     if (N <= 0)
       printf("Exception: N must be greater than 0.\n");
     else {
-      /* FOR DEBUG USE. DUE TO UNIMPLEMENTED EXPR.  */
-      printf("DEBUG: Will disregard the EXPR field and set address 0x00100000.\n");
-      Add = 0x100000;
-      success = true;
-      // Add = expr(exp, &success);
+      Add = expr(exp, &success);
       if (!success)
         printf("Exception: Unexpected address \'%s\'.\n", args + strlen(arg) + 1);
       else {
