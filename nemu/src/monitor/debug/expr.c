@@ -217,6 +217,8 @@ uint32_t finddom(int p, int q) {
           lastlvl = 14;
         }
         break;
+      default:
+        break;
     }
     q--;
   }
