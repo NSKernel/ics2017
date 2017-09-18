@@ -313,7 +313,6 @@ uint32_t eval(int p, int q, bool *success) {
       return 0;
     }
     
-    printf("dom found at %d\n", domop);
     
     if (tokens[domop].type == TK_DEREF || tokens[domop].type == TK_NEG) {
       /* 
@@ -332,9 +331,7 @@ uint32_t eval(int p, int q, bool *success) {
     }
     
     val1 = eval(p, domop - 1, success);
-    printf("evalleft p = %d, q = %d\n", p, q);
     val2 = eval(domop + 1, q, success);
-    printf("evalright p = %d, q = %d\n", p, q);
     if (*success == false)
       return 0;
     
@@ -380,6 +377,5 @@ uint32_t expr(char *e, bool *success) {
       tokens[i].type = TK_NEG;
   }
   
-  printf("eval p = %d, q = %d\n", 0, nr_token - 1);
   return eval(0, nr_token - 1, success);
 }
