@@ -38,8 +38,8 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
 
-  {"[0-9]+", TK_DECNUM}, 
   {"0x[0-9a-fA-F]+", TK_HEXNUM},
+  {"[0-9]+", TK_DECNUM}, 
   {"\\$[a-z]+", TK_REGNAME},
   {" +", TK_NOTYPE},    // spaces
   {"\\!", '!'},         // not
