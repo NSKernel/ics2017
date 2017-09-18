@@ -129,7 +129,7 @@ static bool make_token(char *e) {
           case TK_HEXNUM:
           case TK_REGNAME:
             while (substr_len--) {
-              tokens[nr_token].str[IndexInTokenStr] = e[position + IndexInTokenStr];
+              tokens[nr_token].str[IndexInTokenStr] = substr_start[IndexInTokenStr];
               IndexInTokenStr++;
             }
             tokens[nr_token].str[IndexInTokenStr] = 0;
