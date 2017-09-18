@@ -149,6 +149,7 @@ static bool make_token(char *e) {
             printf("Unexpected: You are not expected to be here. Do please report this to the developer.\n");
         }
         nr_token++;
+        printf("nr_token++\n");
         break;
       }
     }
