@@ -299,6 +299,7 @@ uint32_t eval(int p, int q, bool *success) {
     return 0;
   }
   else if (check_parentheses(p, q) == true) {
+    printf("evalparent p = %d, q = %d\n", p, q);
     return eval(p + 1, q - 1, success);
   }
   else {
@@ -326,7 +327,9 @@ uint32_t eval(int p, int q, bool *success) {
     }
     
     val1 = eval(p, domop - 1, success);
+    printf("evalleft p = %d, q = %d\n", p, q);
     val2 = eval(domop + 1, q, success);
+    printf("evalright p = %d, q = %d\n", p, q);
     if (*success == false)
       return 0;
     
