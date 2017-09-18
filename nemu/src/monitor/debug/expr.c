@@ -149,7 +149,6 @@ static bool make_token(char *e) {
             printf("Unexpected: You are not expected to be here. Do please report this to the developer.\n");
         }
         nr_token++;
-        printf("nr_token++\n");
         break;
       }
     }
@@ -253,7 +252,8 @@ uint32_t hexstr2int(char* hexnum) {
     else if (hexnum[p] >= 'A' && hexnum[p] <= 'F')
       result = result * 16 + (hexnum[p] - 'A' + 10);  
     else if (hexnum[p] >= 'a' && hexnum[p] <= 'f')
-      result = result * 16 + (hexnum[p] - 'a' + 10);  
+      result = result * 16 + (hexnum[p] - 'a' + 10); 
+    p += 1; 
   }
   return result;
 }
@@ -266,7 +266,7 @@ uint32_t eval(int p, int q, bool *success) {
   int i;
   
   if (p > q) {
-    printf("Exception: Bad expression. p = %d, q = %d\n", p, q);
+    printf("Exception: Bad expression.\n");
     *success = false;
     return 0;
   }
@@ -370,6 +370,6 @@ uint32_t expr(char *e, bool *success) {
     if (tokens[i].type == TK_SUB && (i == 0 || (tokens[i - 1].type != TK_RP && tokens[i - 1].type != TK_DECNUM && tokens[i - 1].type != TK_HEXNUM && tokens[i - 1].type != TK_REGNAME)))
       tokens[i].type = TK_NEG;
   }
-
+  
   return eval(0, nr_token - 1, success);
 }
