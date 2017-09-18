@@ -31,6 +31,9 @@ enum {
   TK_GE = 241,
   TK_EQ = 252,
   TK_NEQ = 251,
+  TK_AND = 240,
+  TK_XOR = 239,
+  TK_OR = 238,
   TK_LGCAND = 250,
   TK_LGCOR = 249
 
@@ -60,16 +63,19 @@ static struct rule {
   {"\\-", '-'},         // substitude
   {"<<", TK_LEFTSHFT},  // left shift
   {">>", TK_RIGHTSHFT}, // right shift
-  {"<=", TK_LEQ} ,      // less or equal
+  {"<=", TK_LEQ},       // less or equal
   {">=", TK_GEQ},       // greater or equal
-  {"<", TK_LE} ,        // less
+  {"<", TK_LE},         // less
   {">", TK_GE},         // greater
-  {"==", TK_EQ} ,       // equal
+  {"==", TK_EQ},        // equal
   {"\\!=", TK_NEQ},     // not equal
   {"\\&\\&", TK_LGCAND},// logical and
   {"\\|\\|", TK_LGCOR}, // logical or
   {"\\!", '!'},         // logical not
-  {"\\~", '~'}         // not
+  {"\\&", TK_AND} ,     // and
+  {"\\^", TK_XOR},      // xor
+  {"\\|", TK_OR} ,      // or
+  {"\\~", '~'}          // not
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -165,6 +171,9 @@ static bool make_token(char *e) {
           case TK_GE:
           case TK_EQ:
           case TK_NEQ:
+          case TK_AND:
+          case TK_XOR:
+          case TK_OR:
           case TK_LGCAND:
           case TK_LGCOR:
           case TK_LGCNOT:
@@ -249,6 +258,24 @@ uint32_t finddom(int p, int q) {
         if (lastlvl < 9) {
           last = q;
           lastlvl = 9;
+        }
+        break;
+      case TK_AND:
+        if (lastlvl < 10) {
+          last = q;
+          lastlvl = 10;
+        }
+        break;
+      case TK_XOR:
+        if (lastlvl < 11) {
+          last = q;
+          lastlvl = 11;
+        }
+        break;
+      case TK_OR:
+        if (lastlvl < 12) {
+          last = q;
+          lastlvl = 12;
         }
         break;
       case TK_LGCAND:
@@ -410,6 +437,9 @@ uint32_t eval(int p, int q, bool *success) {
       case TK_GE: return val1 > val2;
       case TK_EQ: return val1 == val2;
       case TK_NEQ: return val1 != val2;
+      case TK_AND: return val1 & val2;
+      case TK_XOR: return val1 ^ val2;
+      case TK_OR: return val1 | val2;
       case TK_LGCAND: return val1 && val2;
       case TK_LGCOR: return val1 || val2;
       
