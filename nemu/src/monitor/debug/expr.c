@@ -315,7 +315,6 @@ uint32_t eval(int p, int q, bool *success) {
   
   if (p > q) {
     printf("Exception: Bad expression. p = %d, q = %d\n", p, q);
-    val2 = scanf("%d", &val1);
     *success = false;
     return 0;
   }
@@ -347,7 +346,6 @@ uint32_t eval(int p, int q, bool *success) {
     return 0;
   }
   else if (check_parentheses(p, q) == true) {
-    printf("evalparent p = %d, q = %d\n", p, q);
     return eval(p + 1, q - 1, success);
   }
   else {
