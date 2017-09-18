@@ -70,6 +70,7 @@ static int cmd_info(char *args) {
       for (i = 0; i < 8; i++) {
         printf("%s: 0x%08X\n", reg_name(i, 4), reg_l(i));
       }
+      printf("eip: 0x%08X\n", cpu.eip);
     }
     else if (strcmp(arg, "w") == 0) {
       printf("DEBUG: Watchpoint unimplemented.\n");
