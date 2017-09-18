@@ -146,7 +146,7 @@ static bool make_token(char *e) {
           case TK_LGCOR:
             break;
           default: 
-            printf("Unexpected: You are not expected to be here. Do please report this to the developer.");
+            printf("Unexpected: You are not expected to be here. Do please report this to the developer.\n");
         }
         nr_token++;
         break;
@@ -265,7 +265,7 @@ uint32_t eval(int p, int q, bool *success) {
   int i;
   
   if (p > q) {
-    printf("Exception: ");
+    printf("Exception: Bad expression. p = %d, q = %d\n", p, q);
     *success = false;
     return 0;
   }
@@ -293,6 +293,7 @@ uint32_t eval(int p, int q, bool *success) {
       }
     }
     *success = false;
+    printf("Exception: Orphan operator.\n");
     return 0;
   }
   else if (check_parentheses(p, q) == true) {
@@ -334,7 +335,7 @@ uint32_t eval(int p, int q, bool *success) {
       case TK_DIV:
         if (val2 == 0) {
           *success = false;
-          printf("Exception: Cannot be divided by 0.");
+          printf("Exception: Cannot be divided by 0.\n");
           return 0;
         }
         else
@@ -345,7 +346,7 @@ uint32_t eval(int p, int q, bool *success) {
       case TK_LGCOR: return val1 || val2;
       default: 
         *success = false;
-        printf("Unexpected: You are not expected to be here. Do please report this to the developer.");
+        printf("Unexpected: You are not expected to be here. Do please report this to the developer.\n");
         return 0;
     }
   }
