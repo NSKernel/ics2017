@@ -18,7 +18,7 @@ enum {
   TK_DEREF = 147,
   TK_MUL = '*',
   TK_DIV = '/',
-  TK_PLUS = '+',
+  TK_ADD = '+',
   TK_SUB = '-',
   TK_EQ = 252,
   TK_NEQ = 251,
@@ -302,9 +302,32 @@ uint32_t eval(int p, int q, bool *success) {
       return -val1;
     }
     
-    //switch (tokens[domop].type) {
-      
-    //}
+    val1 = eval(p, domop - 1, success);
+    val2 = eval(domop + 1, q, success);
+    if (*success = false)
+      return 0;
+    
+    switch (tokens[domop].type) {
+      case TK_ADD: return val1 + val2;
+      case TK_SUB: return val1 - val2;
+      case TK_MUL: return val1 * val2;
+      case TK_DIV:
+        if (val2 == 0) {
+          *success = false;
+          printf("Exception: Cannot be divided by 0.");
+          return 0;
+        }
+        else
+          return val1 / val2;
+      case TK_EQ: return val1 == val2;
+      case TK_NEQ: return val1 != val2;
+      case TK_LGCAND: return val1 && val2;
+      case TK_LGCOR: return val1 || val2;
+      default: 
+        *success = false
+        printf("Unexpected: You are not expected to be here. Do please report this to the developer.");
+        return 0;
+    }
   }
   return 0;
 }
