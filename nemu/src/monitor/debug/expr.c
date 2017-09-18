@@ -172,6 +172,7 @@ uint32_t finddom(int p, int q) {
       if (tokens[q].type == TK_LP)
         parentheselvl--;
       q--;
+      continue;
     }
     switch (tokens[q].type) {
       case TK_RP:
