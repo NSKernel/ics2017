@@ -83,12 +83,11 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_p(char *args) {
-  char *arg = strtok(NULL, " ");
   uint32_t i;
   bool success;
 
 
-  if (arg == NULL) {
+  if (args == NULL) {
     printf("Exception: Expression field EXPR is required.\n");
   }
   else {
