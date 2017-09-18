@@ -224,8 +224,23 @@ uint32_t finddom(int p, int q) {
 }
 
 bool check_parentheses(int p, int q) {
-  printf("DEBUG: Unimplemented.");
-  return false;
+  int parentheselvl = 0;
+  
+  if (tokens[p].type != TK_LP || tokens[q].type != TK_RP)
+    return false;
+  
+  p += 1;
+  while (p < q) {
+    if (tokens[p].type == TK_LP)
+      parentheselvl += 1;
+    else if (tokens[p].type == TK_RP) {
+      if (parentheselvl == 0)
+        return false;
+      parentheselvl -= 1;
+    }
+    p += 1;
+  }
+  return true;
 }
 
 uint32_t hexstr2int(char* hexnum) {
@@ -233,9 +248,11 @@ uint32_t hexstr2int(char* hexnum) {
   int p = 2;
   while (hexnum[p]) {
     if (hexnum[p] >= '0' && hexnum[p] <= '9')
-       result = result * 16 + (hexnum[p] - '0');
+      result = result * 16 + (hexnum[p] - '0');
     else if (hexnum[p] >= 'A' && hexnum[p] <= 'F')
-       result = result * 16 + (hexnum[p] - 'A' + 10);  
+      result = result * 16 + (hexnum[p] - 'A' + 10);  
+    else if (hexnum[p] >= 'a' && hexnum[p] <= 'f')
+      result = result * 16 + (hexnum[p] - 'a' + 10);  
   }
   return result;
 }
@@ -260,6 +277,9 @@ uint32_t eval(int p, int q, bool *success) {
     if (tokens[p].type == TK_REGNAME) {
       if (!strcmp(tokens[p].str, "$eip"))
         return cpu.eip;
+      /*
+         str + 1 is used to ignore the $ in regname
+      */
       for (i = 0; i < 8; i++) {
         if (!strcmp(tokens[p].str + 1, reg_name(i, 4))) {
           return reg_l(i);
