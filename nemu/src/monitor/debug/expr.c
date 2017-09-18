@@ -310,6 +310,8 @@ uint32_t eval(int p, int q, bool *success) {
       return 0;
     }
     
+    printf("dom found at %d\n", domop);
+    
     if (tokens[domop].type == TK_DEREF || tokens[domop].type == TK_NEG) {
       /* 
          We define a * or a - as deref or neg if and only if the token before
