@@ -15,11 +15,20 @@ enum {
   TK_LP = '(',
   TK_RP = ')',
   TK_NEG = 248,
-  TK_DEREF = 147,
+  TK_DEREF = 247,
+  TK_LGCNOT = '!',
+  TK_NOT = '~', 
   TK_MUL = '*',
   TK_DIV = '/',
+  TK_MOD = '%',
   TK_ADD = '+',
   TK_SUB = '-',
+  TK_LEFTSHFT = 246,
+  TK_RIGHTSHFT = 245,
+  TK_LEQ = 244,
+  TK_GEQ = 243,
+  TK_LE = 242,
+  TK_GE = 241,
   TK_EQ = 252,
   TK_NEQ = 251,
   TK_LGCAND = 250,
@@ -42,17 +51,25 @@ static struct rule {
   {"[0-9]+", TK_DECNUM}, 
   {"\\$[a-z]+", TK_REGNAME},
   {" +", TK_NOTYPE},    // spaces
-  {"\\!", '!'},         // not
   {"\\(", '('},         // left parenthese
   {"\\)", ')'},         // right parenthese
   {"\\*", '*'},         // multiply or derefrence
   {"\\/", '/'},         // divide
+  {"\\%", '%'},         // mod
   {"\\+", '+'},         // plus
   {"\\-", '-'},         // substitude
+  {"<<", TK_LEFTSHFT},  // left shift
+  {">>", TK_RIGHTSHFT}, // right shift
+  {"<=", TK_LEQ} ,      // less or equal
+  {">=", TK_GEQ},       // greater or equal
+  {"<", TK_LE} ,        // less
+  {">", TK_GE},         // greater
   {"==", TK_EQ} ,       // equal
   {"\\!=", TK_NEQ},     // not equal
   {"\\&\\&", TK_LGCAND},// logical and
-  {"\\|\\|", TK_LGCOR}  // logical or
+  {"\\|\\|", TK_LGCOR}, // logical or
+  {"\\!", '!'},         // logical not
+  {"\\~", '~'}         // not
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -140,10 +157,19 @@ static bool make_token(char *e) {
           case TK_DIV:
           case TK_ADD:
           case TK_SUB:
+          case TK_LEFTSHFT:
+          case TK_RIGHTSHFT:
+          case TK_LEQ:
+          case TK_GEQ:
+          case TK_LE:
+          case TK_GE:
           case TK_EQ:
           case TK_NEQ:
           case TK_LGCAND:
           case TK_LGCOR:
+          case TK_LGCNOT:
+          case TK_NOT:
+          case TK_MOD:
             break;
           default: 
             printf("Unexpected: You are not expected to be here. Do please report this to the developer.\n");
@@ -180,6 +206,8 @@ uint32_t finddom(int p, int q) {
         break;
       case TK_NEG:
       case TK_DEREF:
+      case TK_NOT:
+      case TK_LGCNOT:
         if (lastlvl <= 3) { // Right combined
           last = q;
           lastlvl = 3;
@@ -187,6 +215,7 @@ uint32_t finddom(int p, int q) {
         break;
       case TK_MUL:
       case TK_DIV:
+      case TK_MOD:
         if (lastlvl < 5) {
           last = q;
           lastlvl = 5;
@@ -197,6 +226,22 @@ uint32_t finddom(int p, int q) {
         if (lastlvl < 6) {
           last = q;
           lastlvl = 6;
+        }
+        break;
+      case TK_LEFTSHFT:
+      case TK_RIGHTSHFT:
+        if (lastlvl < 7) {
+          last = q;
+          lastlvl = 7;
+        }
+        break;
+      case TK_LEQ:
+      case TK_GEQ:
+      case TK_LE:
+      case TK_GE:
+        if (lastlvl < 8) {
+          last = q;
+          lastlvl = 8;
         }
         break;
       case TK_EQ:
@@ -314,7 +359,7 @@ uint32_t eval(int p, int q, bool *success) {
     }
     
     
-    if (tokens[domop].type == TK_DEREF || tokens[domop].type == TK_NEG) {
+    if (tokens[domop].type == TK_DEREF || tokens[domop].type == TK_NEG || tokens[domop].type == TK_LGCNOT || tokens[domop].type == TK_NOT) {
       /* 
          We define a * or a - as deref or neg if and only if the token before
          it is an operator, so as long as there are still tokens before deref/neg
@@ -326,8 +371,12 @@ uint32_t eval(int p, int q, bool *success) {
       
       if (tokens[domop].type == TK_DEREF)
         return vaddr_read(val1, 4);
-        
-      return -val1;
+      if (tokens[domop].type == TK_NEG)  
+        return -val1;
+      if (tokens[domop].type == TK_LGCNOT)  
+        return !val1;
+      if (tokens[domop].type == TK_NOT)  
+        return ~val1;
     }
     
     val1 = eval(p, domop - 1, success);
@@ -347,10 +396,25 @@ uint32_t eval(int p, int q, bool *success) {
         }
         else
           return val1 / val2;
+      case TK_MOD:
+        if (val2 == 0) {
+          *success = false;
+          printf("Exception: Cannot be divided by 0.\n");
+          return 0;
+        }
+        else
+          return val1 % val2;
+      case TK_LEFTSHFT: return val1 << val2;
+      case TK_RIGHTSHFT: return val1 >> val2;
+      case TK_LEQ: return val1 <= val2;
+      case TK_GEQ: return val1 >= val2;
+      case TK_LE: return val1 < val2; 
+      case TK_GE: return val1 > val2;
       case TK_EQ: return val1 == val2;
       case TK_NEQ: return val1 != val2;
       case TK_LGCAND: return val1 && val2;
       case TK_LGCOR: return val1 || val2;
+      
       default: 
         *success = false;
         printf("Unexpected: You are not expected to be here. Do please report this to the developer.\n");
