@@ -266,7 +266,8 @@ uint32_t eval(int p, int q, bool *success) {
   int i;
   
   if (p > q) {
-    printf("Exception: Bad expression.\n");
+    printf("Exception: Bad expression. p = %d, q = %d\n", p, q);
+    val2 = scanf("%d", &val1);
     *success = false;
     return 0;
   }
