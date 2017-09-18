@@ -138,7 +138,7 @@ static bool make_token(char *e) {
           case TK_RP:
           case TK_MUL:
           case TK_DIV:
-          case TK_PLUS:
+          case TK_ADD:
           case TK_SUB:
           case TK_EQ:
           case TK_NEQ:
@@ -191,7 +191,7 @@ uint32_t finddom(int p, int q) {
           lastlvl = 5;
         }
         break;
-      case TK_PLUS:
+      case TK_ADD:
       case TK_SUB:
         if (lastlvl < 6) {
           last = q;
@@ -244,7 +244,7 @@ uint32_t hexstr2int(char* hexnum) {
 uint32_t eval(int p, int q, bool *success) {
   int domop;
   uint32_t val1;
- // uint32_t val2;
+  uint32_t val2;
   int i;
   
   if (p > q) {
@@ -304,7 +304,7 @@ uint32_t eval(int p, int q, bool *success) {
     
     val1 = eval(p, domop - 1, success);
     val2 = eval(domop + 1, q, success);
-    if (*success = false)
+    if (*success == false)
       return 0;
     
     switch (tokens[domop].type) {
@@ -324,7 +324,7 @@ uint32_t eval(int p, int q, bool *success) {
       case TK_LGCAND: return val1 && val2;
       case TK_LGCOR: return val1 || val2;
       default: 
-        *success = false
+        *success = false;
         printf("Unexpected: You are not expected to be here. Do please report this to the developer.");
         return 0;
     }
