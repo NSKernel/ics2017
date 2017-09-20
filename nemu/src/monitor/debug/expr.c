@@ -298,7 +298,7 @@ uint32_t finddom(int p, int q) {
   return last;
 }
 
-bool check_parentheses(int p, int q) {
+bool check_parentheses(int p, int q, bool *success) {
   int parentheselvl = 0;
   
   if (tokens[p].type != TK_LP || tokens[q].type != TK_RP)
@@ -309,13 +309,20 @@ bool check_parentheses(int p, int q) {
     if (tokens[p].type == TK_LP)
       parentheselvl += 1;
     else if (tokens[p].type == TK_RP) {
-      if (parentheselvl == 0)
+      if (parentheselvl == 0) {
+        *success = false;
+        printf("Exception: Unmatched parenthese \')\'.\n");
         return false;
+      }
       parentheselvl -= 1;
     }
     p += 1;
   }
-  return true;
+  if (parentheselvl == 0)
+    return true;
+  *success = false;
+  printf("Exception: Unmatched parenthese \'(\'.\n");
+  return false;
 }
 
 uint32_t hexstr2int(char* hexnum) {
@@ -372,10 +379,10 @@ uint32_t eval(int p, int q, bool *success) {
     printf("Exception: Orphan operator.\n");
     return 0;
   }
-  else if (check_parentheses(p, q) == true) {
+  else if (check_parentheses(p, q, success) == true) {
     return eval(p + 1, q - 1, success);
   }
-  else {
+  else if (*success) {
     domop = finddom(p, q);
     
     if (domop == -1) {
