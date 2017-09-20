@@ -8,6 +8,8 @@
  */
 #define MAX_INSTR_TO_PRINT 10
 
+extern bool eval_wp();
+
 int nemu_state = NEMU_STOP;
 
 void exec_wrapper(bool);
@@ -31,6 +33,8 @@ void cpu_exec(uint64_t n) {
     /* TODO: check watchpoints here. */
 
 #endif
+    if (eval_wp())
+      break;
 
 #ifdef HAS_IOE
     extern void device_update();

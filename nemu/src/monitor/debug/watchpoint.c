@@ -6,6 +6,8 @@
 static WP wp_pool[NR_WP];
 static WP *head, *free_, *tail, *free_tail;
 
+extern uint32_t expr(char *e, bool *success);
+
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
@@ -128,6 +130,20 @@ void print_wp() {
     printf("%d\t%s\n", inum->NO, inum->expr);
     inum = inum->next;
   }
+}
+
+bool eval_wp() {
+  WP* inum = head;
+  bool success;
+  
+  while (inum != NULL) {
+    if (expr(inum->expr, &success)) {
+      printf("Hit watchpoint number %d.\n", inum->NO);
+      return true;
+    }
+    inum = inum->next;
+  }
+  return false;
 }
 
 
