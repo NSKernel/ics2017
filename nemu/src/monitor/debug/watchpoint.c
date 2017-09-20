@@ -95,6 +95,7 @@ void remove_wp(int NO) {
         tail = current;
         free_wp(current->next);
         current->next = NULL;
+        printf("Watchpoint number %d has been deleted.\n", NO);
         return;
       }
       
@@ -105,10 +106,12 @@ void remove_wp(int NO) {
         inum->NO -= 1;
         inum = inum->next;
       }
+      printf("Watchpoint number %d has been deleted.\n", NO);
       return;
     }
     current = current->next;
   }
+  printf("Watchpoint number %d has been deleted.\n", NO);
   return;
 }
 
