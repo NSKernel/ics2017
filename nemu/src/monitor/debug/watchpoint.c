@@ -10,7 +10,6 @@ void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
-    wp_pool[i].expr = NULL;
     wp_pool[i].next = &wp_pool[i + 1];
   }
   wp_pool[NR_WP - 1].next = NULL;
@@ -51,7 +50,7 @@ void create_wp(char* expr) {
   }
   
   wp->next = NULL;
-  wp->expr = expr;
+  strcpy(wp->expr, expr);
   if (tail != NULL) {
     wp->NO = tail->NO + 1;
     tail->next = wp;
@@ -119,7 +118,7 @@ void print_wp() {
     return;
   }
   
-  printf("There are %d watchpoint%s.\nNO\tExpression\n", tail->NO + 1, ((tail->NO == 0) ? "" : "s"));
+  printf("There %s %d watchpoint%s.\nNO\tExpression\n", ((tail->NO == 0) ? "is" : "are"), tail->NO + 1, ((tail->NO == 0) ? "" : "s"));
   while(inum != NULL) {
     printf("%d\t%s\n", inum->NO, inum->expr);
     inum = inum->next;
