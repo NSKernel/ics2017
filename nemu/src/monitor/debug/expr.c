@@ -206,6 +206,8 @@ uint32_t finddom(int p, int q) {
     if (parentheselvl != 0) {
       if (tokens[q].type == TK_LP)
         parentheselvl--;
+      if (tokens[q].type == TK_RP)
+        parentheselvl++;
       q--;
       continue;
     }
