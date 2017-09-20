@@ -75,6 +75,7 @@ void remove_wp(int NO) {
     if (head == tail) {
       free_wp(head);
       head = tail = NULL;
+      printf("Watchpoint number %d has been deleted.\n", NO);
       return;
     }
     inum = head->next;
@@ -84,6 +85,7 @@ void remove_wp(int NO) {
       inum->NO -= 1;
       inum = inum->next;
     }
+    printf("Watchpoint number %d has been deleted.\n", NO);
     return;
   }
   
