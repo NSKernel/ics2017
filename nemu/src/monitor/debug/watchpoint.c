@@ -122,6 +122,7 @@ void print_wp() {
   printf("There are %d watchpoint%s.\nNO\tExpression\n", tail->NO + 1, ((tail->NO == 0) ? "" : "s"));
   while(inum != NULL) {
     printf("%d\t%s\n", inum->NO, inum->expr);
+    inum = inum->next;
   }
 }
 
