@@ -300,6 +300,7 @@ uint32_t finddom(int p, int q) {
 
 bool check_parentheses(int p, int q, bool *success) {
   int parentheselvl = 0;
+  bool retval = true;
   
   if (tokens[p].type != TK_LP || tokens[q].type != TK_RP)
     return false;
@@ -309,19 +310,16 @@ bool check_parentheses(int p, int q, bool *success) {
     if (tokens[p].type == TK_LP)
       parentheselvl += 1;
     else if (tokens[p].type == TK_RP) {
-      if (parentheselvl == 0) {
-        *success = false;
-        printf("Exception: Unmatched parenthese \')\'.\n");
-        return false;
-      }
+      if (parentheselvl == 0 && retval == true)
+        retval = false;
       parentheselvl -= 1;
     }
     p += 1;
   }
   if (parentheselvl == 0)
-    return true;
+    return retval;
   *success = false;
-  printf("Exception: Unmatched parenthese \'(\'.\n");
+  printf("Exception: Unmatched parenthese \'%s\'.\n", ((parentheselvl > 0)? "(" : ")"));
   return false;
 }
 
