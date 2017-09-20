@@ -164,6 +164,10 @@ static int cmd_w(char *args) {
   }
   else {
     // Execute the expression to check if there are any mistakes in the expression
+    if (strlen(args) > 32 * 16) {
+      printf("Exception: Expression too long.\n");
+      return 0;
+    }
     expr(args, &success);
     
     if (!success) {
