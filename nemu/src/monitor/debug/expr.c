@@ -298,7 +298,7 @@ uint32_t finddom(int p, int q) {
     q--;
   }
   if (parentheselvl != 0) {
-    printf("Exception: Unmatched parenthese \'%s\'.\n", ((parentheselvl < 0)? "(" : ")"));
+    printf("Exception: Unmatched parenthese \'%s\'.\n", ((parentheselvl < 0) ? "(" : ")"));
     last = -1;
   }
   return last;
@@ -325,7 +325,7 @@ bool check_parentheses(int p, int q, bool *success) {
   if (parentheselvl == 0)
     return retval;
   *success = false;
-  printf("Exception: Unmatched parenthese \'%s\'.\n", ((parentheselvl > 0)? "(" : ")"));
+  printf("Exception: Unmatched parenthese \'%s\'.\n", ((parentheselvl > 0) ? "(" : ")"));
   return false;
 }
 
