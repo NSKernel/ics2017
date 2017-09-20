@@ -135,15 +135,16 @@ void print_wp() {
 bool eval_wp() {
   WP* inum = head;
   bool success;
+  bool retval = false;
   
   while (inum != NULL) {
     if (expr(inum->expr, &success)) {
       printf("Hit watchpoint number %d.\n", inum->NO);
-      return true;
+      retval = true;
     }
     inum = inum->next;
   }
-  return false;
+  return retval;
 }
 
 
