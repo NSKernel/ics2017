@@ -4,7 +4,7 @@
 #define NR_WP 32
 
 static WP wp_pool[NR_WP];
-static WP *head, *free_, *tail, *free_tail_;
+static WP *head, *free_, *tail, *free_tail;
 
 void init_wp_pool() {
   int i;
@@ -18,14 +18,17 @@ void init_wp_pool() {
   head = NULL;
   tail = NULL;
   free_ = wp_pool;
-  free_tail_ = &wp_pool[NR_WP - 1];
+  free_tail = &wp_pool[NR_WP - 1];
 }
 
 WP* new_wp() {
   WP* retval = free_;
   
   if (free_ != NULL) {
-    free_ = free_->next;
+    if (free_ == free_tail)
+      free_ = free_tail = NULL;
+    else
+      free_ = free_->next;
   }
   return retval;
 }
@@ -33,8 +36,11 @@ WP* new_wp() {
 void free_wp(WP *wp) {
   wp->next = NULL;
   wp->NO = -1;
-  free_tail_->next = wp;
-  free_tail_ = wp;
+  if(free_tail != NULL)
+    free_tail->next = wp;
+  else
+    free_ = wp;
+  free_tail = wp;
 }
 
 void create_wp(char* expr) {
