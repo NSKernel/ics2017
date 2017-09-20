@@ -97,10 +97,10 @@ void remove_wp(int NO) {
       }
       
       inum = current->next->next;
-      current->next = inum;
       free_wp(current->next);
+      current->next = inum;
       while (inum != NULL) {
-        inum->NO -=1;
+        inum->NO -= 1;
         inum = inum->next;
       }
       return;
