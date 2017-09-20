@@ -388,7 +388,6 @@ uint32_t eval(int p, int q, bool *success) {
   }
   else if (*success) {
     domop = finddom(p, q);
-    printf("Find dom at %d\n", domop);
     
     if (domop == -1) {
       *success = false;
