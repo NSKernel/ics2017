@@ -4,20 +4,119 @@
 #define NR_WP 32
 
 static WP wp_pool[NR_WP];
-static WP *head, *free_;
+static WP *head, *free_, *tail, *free_tail_;
 
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
+    wp_pool[i].expr = NULL;
     wp_pool[i].next = &wp_pool[i + 1];
   }
   wp_pool[NR_WP - 1].next = NULL;
 
   head = NULL;
+  tail = NULL;
   free_ = wp_pool;
+  free_tail_ = &wp_pool[NR_WP - 1];
 }
 
-/* TODO: Implement the functionality of watchpoint */
+WP* new_wp() {
+  WP* retval = free_;
+  
+  if (free_ != NULL) {
+    free_ = free_->next;
+  }
+  return retval;
+}
+
+void free_wp(WP *wp) {
+  wp->next = NULL;
+  wp->NO = -1;
+  free_tail_->next = wp;
+  free_tail_ = wp;
+}
+
+void create_wp(char* expr) {
+  WP* wp = new_wp();
+  if (wp == NULL) {
+    printf("Exception: You have reached the maximum amount of watchpoints. Cannot assign new watchpoint.\n");
+    return;
+  }
+  
+  wp->next = NULL;
+  wp->expr = expr;
+  if (tail != NULL) {
+    wp->NO = tail->NO + 1;
+    tail->next = wp;
+    tail = wp;
+  }
+  else {
+    wp->NO = 0;
+    head = tail = wp;
+  }
+}
+
+void remove_wp(int NO) {
+  WP* current = head;
+  WP* inum;
+
+  if (tail == NULL || tail->NO < NO || NO < 0) {
+    printf("Exception: Watchpoint number out of range.");
+    return;
+  }
+  
+  if (NO == 0){
+    if (head == tail) {
+      free_wp(head);
+      head = tail = NULL;
+      return;
+    }
+    inum = head->next;
+    free_wp(head);
+    head = inum;
+    while (inum != NULL) {
+      inum->NO -= 1;
+      inum = inum->next;
+    }
+    return;
+  }
+  
+  while (current->next != NULL) {
+    if (current->next->NO == NO) {
+      if (tail == current->next) {
+        tail = current;
+        free_wp(current->next);
+        current->next = NULL;
+        return;
+      }
+      
+      inum = current->next->next;
+      current->next = inum;
+      free_wp(current->next);
+      while (inum != NULL) {
+        inum->NO -=1;
+        inum = inum->next;
+      }
+      return;
+    }
+    current = current->next;
+  }
+  return;
+}
+
+void print_wp() {
+  WP* inum = head;
+  
+  if (head == NULL) {
+    printf("No watchpoint.\n");
+    return;
+  }
+  
+  printf("There are %d watchpoint%s.\nNO\tExpression\n", tail->NO + 1, ((tail->NO == 0) ? "" : "s"));
+  while(inum != NULL) {
+    printf("%d\t%s\n", inum->NO, inum->expr);
+  }
+}
 
 

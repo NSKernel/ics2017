@@ -11,6 +11,10 @@ extern CPU_state cpu;
 
 uint32_t expr(char *e, bool *success);
 
+void create_wp(char* expr);
+void remove_wp(int NO);
+void print_wp();
+
 void cpu_exec(uint64_t);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -73,7 +77,7 @@ static int cmd_info(char *args) {
       printf("eip: 0x%08X\n", cpu.eip);
     }
     else if (strcmp(arg, "w") == 0) {
-      printf("DEBUG: Watchpoint unimplemented.\n");
+      print_wp();
     }
     else {
       printf("Exception: Unknown subcommand \'%s\'.\n", arg);
@@ -151,6 +155,40 @@ static int cmd_x(char *args) {
   return 0;
 }
 
+static int cmd_w(char *args) {
+  bool success;
+
+
+  if (args == NULL) {
+    printf("Exception: Expression field EXPR is required.\n");
+  }
+  else {
+    // Execute the expression to check if there are any mistakes in the expression
+    expr(args, &success);
+    
+    if (!success) {
+      printf("Exception: Watchpoint not set due to error(s) in your expression.\n");
+      return 0;
+    }
+    create_wp(args);
+  }
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  char *arg = strtok(NULL, " ");
+  int i;
+
+  if (arg == NULL) {
+    printf("Exception: Field N is required.\n");
+  }
+  else {
+    i = atoi(args);
+    remove_wp(i);
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -164,13 +202,9 @@ static struct {
   { "si", "N - Step in for N steps", cmd_si },
   { "info", "SUBCMD - Provide program status. SUBCMD = r or w", cmd_info },
   { "p", "EXPR - Evaluate expression", cmd_p },
-  { "x", "N EXPR - Output 4N bytes from the address evaluated form EXPR", cmd_x }
-  // { "w", "EXPR - Set a watchpoint at the address evaluated from EXPR", cmd_w }
-  // { "d", "N - Delete the watchpoint numbered N", cmd_d }
-
-  
-  /* TODO: Add more commands */
-
+  { "x", "N EXPR - Output 4N bytes from the address evaluated form EXPR", cmd_x },
+  { "w", "EXPR - Set a watchpoint at the address evaluated from EXPR", cmd_w },
+  { "d", "N - Delete the watchpoint numbered N", cmd_d }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
