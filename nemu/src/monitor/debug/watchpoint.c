@@ -67,7 +67,7 @@ void remove_wp(int NO) {
   WP* inum;
 
   if (tail == NULL || tail->NO < NO || NO < 0) {
-    printf("Exception: Watchpoint number out of range.");
+    printf("Exception: Watchpoint number out of range.\n");
     return;
   }
   

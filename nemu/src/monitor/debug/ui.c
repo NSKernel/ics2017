@@ -189,6 +189,7 @@ static int cmd_d(char *args) {
   else {
     i = atoi(args);
     remove_wp(i);
+    printf("Watchpoint number %d has been deleted.\n", i);
   }
   return 0;
 }
