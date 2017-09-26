@@ -8,6 +8,7 @@ typedef struct watchpoint {
   struct watchpoint *next;
 
   char expr[32*16+1];
+  int val;
 } WP;
 
 #endif

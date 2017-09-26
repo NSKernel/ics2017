@@ -11,7 +11,7 @@ extern CPU_state cpu;
 
 uint32_t expr(char *e, bool *success);
 
-void create_wp(char* expr);
+void create_wp(char* expr, int val);
 void remove_wp(int NO);
 void print_wp();
 
@@ -157,7 +157,7 @@ static int cmd_x(char *args) {
 
 static int cmd_w(char *args) {
   bool success;
-
+  int val;
 
   if (args == NULL) {
     printf("Exception: Expression field EXPR is required.\n");
@@ -168,13 +168,13 @@ static int cmd_w(char *args) {
       printf("Exception: Expression too long.\n");
       return 0;
     }
-    expr(args, &success);
+    val = expr(args, &success);
     
     if (!success) {
       printf("Exception: Watchpoint not set due to error(s) in your expression.\n");
       return 0;
     }
-    create_wp(args);
+    create_wp(args, val);
   }
   return 0;
 }

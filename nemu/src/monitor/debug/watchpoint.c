@@ -44,7 +44,7 @@ void free_wp(WP *wp) {
   free_tail = wp;
 }
 
-void create_wp(char* expr) {
+void create_wp(char* expr, int val) {
   WP* wp = new_wp();
   if (wp == NULL) {
     printf("Exception: You have reached the maximum amount of watchpoints. Cannot assign new watchpoint.\n");
@@ -53,6 +53,7 @@ void create_wp(char* expr) {
   
   wp->next = NULL;
   strcpy(wp->expr, expr);
+  wp->val = val;
   if (tail != NULL) {
     wp->NO = tail->NO + 1;
     tail->next = wp;
@@ -136,10 +137,13 @@ bool eval_wp() {
   WP* inum = head;
   bool success;
   bool retval = false;
+  int val;
   
   while (inum != NULL) {
-    if (expr(inum->expr, &success)) {
-      printf("Hit watchpoint number %d.\n", inum->NO);
+    val = expr(inum->expr, &success);
+    if (inum->val != val) {
+      printf("Hit watchpoint number %d, value changed from %d to %d.\n", inum->NO, inum->val, val);
+      inum->val = val;
       retval = true;
     }
     inum = inum->next;
