@@ -33,7 +33,7 @@ void cpu_exec(uint64_t n) {
     /* TODO: check watchpoints here. */
 
 #endif
-    if (eval_wp())
+    if (nemu_state == NEMU_RUNNING && eval_wp())
       break;
 
 #ifdef HAS_IOE
