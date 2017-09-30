@@ -364,6 +364,18 @@ uint32_t eval(int p, int q, bool *success) {
     if (tokens[p].type == TK_REGNAME) {
       if (!strcmp(tokens[p].str, "$eip"))
         return cpu.eip;
+      if (!strcmp(tokens[p].str, "$eflags"))
+        return cpu.eflags;
+      if (!strcmp(tokens[p].str, "$zf"))
+        return cpu.flags.ZF;
+      if (!strcmp(tokens[p].str, "$of"))
+        return cpu.flags.OF;
+      if (!strcmp(tokens[p].str, "$cf"))
+        return cpu.flags.CF;
+      if (!strcmp(tokens[p].str, "$sf"))
+        return cpu.flags.SF;
+      if (!strcmp(tokens[p].str, "$if"))
+        return cpu.flags.IF;
       /*
          str + 1 is used to ignore the $ in regname
       */
