@@ -16,9 +16,13 @@ make_EHelper(xor) {
   rtl_xor(&t0, &id_dest->val, &id_src->val);
   printf("caonibaba\n");
   rtl_set_CF(0);
+   printf("caonibaba\n");
   rtl_set_CF(0);
+   printf("caonibaba\n");
   rtl_update_ZFSF(&t0, 4);
+   printf("caonibaba\n");
   rtl_sr(id_dest->reg, 4, &t0);
+   printf("caonibaba\n");
   print_asm_template2(xor);
 }
 
