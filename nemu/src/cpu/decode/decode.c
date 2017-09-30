@@ -266,17 +266,6 @@ make_DHelper(J) {
   decoding.jmp_eip = id_dest->simm + *eip;
 }
 
-make_DHelper(push_I) {
-  decode_op_I(eip, id_dest, true);
-}
-
-make_DHelper(push_r) {
-  decode_op_r(eip, id_dest, true);
-}
-
-make_DHelper(pop_r) {
-  decode_op_r(eip, id_dest, false);
-}
 
 make_DHelper(in_I2a) {
   id_src->width = 1;

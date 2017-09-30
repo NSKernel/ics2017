@@ -113,10 +113,7 @@ static inline void rtl_sr(int r, int width, const rtlreg_t* src1) {
 
 #define make_rtl_setget_eflags(f) \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
-    if (*src) \
-      cpu.flags.f = 1; \
-    else \
-      cpu.flags.f = 0; \
+    cpu.flags.f = *src; \
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
     *dest = cpu.flags.f; \
@@ -173,17 +170,11 @@ static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 }
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
-  if((*result & (0xFFFFFFFF >> ((4 - width) * 8))) == 0) 
-    cpu.flags.ZF = 1;
-  else
-    cpu.flags.ZF = 0;
+  cpu.flags.ZF = ((*result & (0xFFFFFFFF >> ((4 - width) * 8))) == 0);
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
-  if (((*result & (0xFFFFFFFF >> ((4 - width) * 8))) & (1 << (width * 8 - 1))) != 0)
-    cpu.eflags |= 0x00000080;
-  else
-    cpu.eflags &= 0xFFFFFF7F;
+  cpu.flags.ZF = (((*result & (0xFFFFFFFF >> ((4 - width) * 8))) & (1 << (width * 8 - 1))) != 0);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
