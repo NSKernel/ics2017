@@ -15,9 +15,9 @@ make_EHelper(and) {
 make_EHelper(xor) {
   rtl_xor(&t0, &id_dest->val, &id_src->val);
   printf("caonibaba\n");
-  rtl_set_CF(0);
+  rtl_set_ZF(&tzero);
    printf("caonibaba\n");
-  rtl_set_CF(0);
+  rtl_set_CF(&tzero);
    printf("caonibaba\n");
   rtl_update_ZFSF(&t0, 4);
    printf("caonibaba\n");
