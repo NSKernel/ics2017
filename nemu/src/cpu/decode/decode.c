@@ -32,13 +32,7 @@ static inline make_DopHelper(SI) {
 
   op->type = OP_TYPE_IMM;
 
-  /* TODO: Use instr_fetch() to read `op->width' bytes of memory
-   * pointed by `eip'. Interpret the result as a signed immediate,
-   * and assign it to op->simm.
-   *
-   op->simm = ???
-   */
-  TODO();
+  op->simm = instr_fetch(eip, op->width);
 
   rtl_li(&op->val, op->simm);
 
@@ -159,6 +153,12 @@ make_DHelper(I2E) {
 make_DHelper(mov_I2E) {
   decode_op_rm(eip, id_dest, false, NULL, false);
   decode_op_I(eip, id_src, true);
+}
+
+make_DHelper(call_SI) {
+  decode_op_SI(eip, id_dest, false);
+  // the target address can be computed in the decode stage
+  decoding.jmp_eip = id_dest->simm + *eip;
 }
 
 /* XX <- Ib

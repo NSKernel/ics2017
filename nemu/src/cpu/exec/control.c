@@ -19,14 +19,16 @@ make_EHelper(jcc) {
 make_EHelper(jmp_rm) {
   decoding.jmp_eip = id_dest->val;
   decoding.is_jmp = 1;
-
+  t0 = cpu.eip;
+  rtl_push(&t0);
   print_asm("jmp *%s", id_dest->str);
 }
 
 make_EHelper(call) {
   // the target address is calculated at the decode stage
-  TODO();
-
+  decoding.is_jmp = 1;
+  t0 = cpu.eip;
+  rtl_push(&t0);
   print_asm("call %x", decoding.jmp_eip);
 }
 
