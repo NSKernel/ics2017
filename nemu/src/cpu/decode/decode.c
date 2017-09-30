@@ -267,11 +267,11 @@ make_DHelper(J) {
 }
 
 make_DHelper(push_I) {
-  decode_op_I(eip, id_src, true);
+  decode_op_I(eip, id_dest, true);
 }
 
 make_DHelper(push_r) {
-  decode_op_r(eip, id_src, true);
+  decode_op_r(eip, id_dest, true);
 }
 
 make_DHelper(pop_r) {
