@@ -158,6 +158,7 @@ make_DHelper(mov_I2E) {
 make_DHelper(call_SI) {
   decode_op_SI(eip, id_dest, false);
   // the target address can be computed in the decode stage
+  printf("eip = %d\n", *eip);
   decoding.jmp_eip = id_dest->simm + *eip;
 }
 
