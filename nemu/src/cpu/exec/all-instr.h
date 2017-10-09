@@ -1,9 +1,13 @@
 #include "cpu/exec.h"
 
 make_EHelper(mov);
+make_EHelper(lea);
+make_EHelper(movzx);
+
 make_EHelper(call);
 make_EHelper(ret);
-make_EHelper(lea);
+make_EHelper(jmp);
+make_EHelper(jcc);
 
 make_EHelper(setcc);
 
@@ -14,7 +18,7 @@ make_EHelper(add);
 make_EHelper(sub);
 make_EHelper(cmp);
 
-
+make_EHelper(test);
 make_EHelper(and);
 make_EHelper(xor);
 
