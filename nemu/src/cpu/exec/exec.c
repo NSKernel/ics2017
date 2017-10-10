@@ -25,7 +25,6 @@ static inline void idex(vaddr_t *eip, opcode_entry *e) {
   /* eip is pointing to the byte next to opcode */
   if (e->decode)
     e->decode(eip);
-  printf("%d\n", decoding.ext_opcode);
   e->execute(eip);
 }
 
@@ -62,7 +61,7 @@ make_group(gp4,
 
   /* 0xff */
 make_group(gp5,
-    EX(inc), EX(dec), EMPTY, EX(call),
+    EX(inc), EX(dec), EX(call), EMPTY,
     EMPTY, EMPTY, EX(push), EMPTY)
 
   /* 0x0f 0x01*/
