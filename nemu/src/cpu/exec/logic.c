@@ -31,7 +31,7 @@ make_EHelper(or) {
   rtl_set_OF(&tzero);
   rtl_set_CF(&tzero);
   rtl_update_ZFSF(&t0, 4);
-  rtl_sr(id_dest->reg, 4, &t0);
+  rtl_sr(id_dest->reg, id_dest->width, &t0);
   print_asm_template2(or);
 }
 
