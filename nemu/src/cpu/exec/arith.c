@@ -18,7 +18,7 @@ make_EHelper(sub) {
   rtl_sub(&t0, &id_dest->val, &id_src->val);
   t1 = (t0 > id_dest->val);
   rtl_set_CF(&t1);
-  t1 = (((id_dest->val < 0) == (-id_src->val < 0)) && ((t0 < 0) != (id_dest->val < 0)));
+  t1 = (((id_dest->val < 0) == ((id_src->val >> 31) == 0)) && ((t0 < 0) != (id_dest->val < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   if(id_dest->type == OP_TYPE_REG)
@@ -32,7 +32,7 @@ make_EHelper(cmp) {
   rtl_sub(&t0, &id_dest->val, &id_src->val);
   t1 = (t0 > id_dest->val);
   rtl_set_CF(&t1);
-  t1 = (((id_dest->val < 0) == (-id_src->val < 0)) && ((t0 < 0) != (id_dest->val < 0)));
+  t1 = (((id_dest->val < 0) == ((id_src->val >> 31) == 0)) && ((t0 < 0) != (id_dest->val < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   print_asm_template2(cmp);
