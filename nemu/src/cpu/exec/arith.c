@@ -33,20 +33,20 @@ make_EHelper(cmp) {
 }
 
 make_EHelper(inc) {
-  TODO();
-
+  t0 = id_dest->val + 1;
+  rtl_sr(id_dest->reg, 4, &t0);
   print_asm_template1(inc);
 }
 
 make_EHelper(dec) {
-  TODO();
-
+  t0 = id_dest->val - 1;
+  rtl_sr(id_dest->reg, 4, &t0);
   print_asm_template1(dec);
 }
 
 make_EHelper(neg) {
-  TODO();
-
+  t0 = -id_dest->val;
+  rtl_sr(id_dest->reg, 4, &t0);
   print_asm_template1(neg);
 }
 
