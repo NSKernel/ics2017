@@ -28,16 +28,11 @@ static inline make_DopHelper(I) {
  */
 /* sign immediate */
 static inline make_DopHelper(SI) {
-  printf("IN SI\n");
   assert(op->width == 1 || op->width == 4);
-  printf("assert passed\n");
   op->type = OP_TYPE_IMM;
-  printf("eip = 0x%8X\n", *eip);
+  
   op->simm = instr_fetch(eip, op->width);
-  printf("fetched\n");
-  printf("%d\n", op->simm);
   op->simm = ((op->simm << (8 * (4 - op->width))) >> (8 * (4 - op->width)));
-  printf("%d\n", op->simm);
   
   rtl_li(&op->val, op->simm);
 
@@ -266,9 +261,7 @@ make_DHelper(a2O) {
 }
 
 make_DHelper(J) {
-  printf("In J\n");
   decode_op_SI(eip, id_dest, false);
-  printf("Out SI\n");
   // the target address can be computed in the decode stage
   decoding.jmp_eip = id_dest->simm + *eip;
 }
