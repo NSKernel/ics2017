@@ -24,6 +24,7 @@ make_EHelper(sub) {
 
 make_EHelper(cmp) {
   rtl_sub(&t0, &id_dest->val, &id_src->val);
+  printf("%d\n", t0);
   t1 = (t0 > id_dest->val);
   rtl_set_CF(&t1);
   t1 = (((id_dest->val < 0) == (-id_src->val < 0)) && ((t0 < 0) != (id_dest->val < 0)));
