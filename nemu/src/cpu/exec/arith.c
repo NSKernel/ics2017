@@ -7,7 +7,6 @@ make_EHelper(add) {
   t1 = (((id_dest->val < 0) == (id_src->val < 0)) && ((t0 < 0) != (id_dest->val < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
-  printf("the fkin' reg is %d\n", id_dest->reg);
   if(id_dest->type == OP_TYPE_REG)
     rtl_sr(id_dest->reg, 4, &t0);
   else if(id_dest->type == OP_TYPE_MEM)
@@ -46,7 +45,10 @@ make_EHelper(inc) {
   t1 = (((id_dest->val < 0) == (1 < 0)) && ((t0 < 0) != (id_dest->val < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
-  rtl_sr(id_dest->reg, 4, &t0);
+  if(id_dest->type == OP_TYPE_REG)
+    rtl_sr(id_dest->reg, 4, &t0);
+  else if(id_dest->type == OP_TYPE_MEM)
+    rtl_sm(&(id_dest->addr), id_dest->width, &t0);
   print_asm_template1(inc);
 }
 
@@ -57,7 +59,10 @@ make_EHelper(dec) {
   t1 = (((id_dest->val < 0) == (-1 < 0)) && ((t0 < 0) != (id_dest->val < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
-  rtl_sr(id_dest->reg, 4, &t0);
+  if(id_dest->type == OP_TYPE_REG)
+    rtl_sr(id_dest->reg, 4, &t0);
+  else if(id_dest->type == OP_TYPE_MEM)
+    rtl_sm(&(id_dest->addr), id_dest->width, &t0);
   print_asm_template1(dec);
 }
 
@@ -68,7 +73,10 @@ make_EHelper(neg) {
   t1 = ((id_dest->val < 0) == (-id_dest->val < 0));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
-  rtl_sr(id_dest->reg, 4, &t0);
+  if(id_dest->type == OP_TYPE_REG)
+    rtl_sr(id_dest->reg, 4, &t0);
+  else if(id_dest->type == OP_TYPE_MEM)
+    rtl_sm(&(id_dest->addr), id_dest->width, &t0);
   print_asm_template1(neg);
 }
 
