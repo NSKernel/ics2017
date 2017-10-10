@@ -185,6 +185,9 @@ make_DHelper(r) {
 
 make_DHelper(E) {
   decode_op_rm(eip, id_dest, true, NULL, false);
+  // for use with call r/m
+  // the target address can be computed in the decode stage
+  decoding.jmp_eip = id_dest->val;
 }
 
 make_DHelper(gp7_E) {
