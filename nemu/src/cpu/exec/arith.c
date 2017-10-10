@@ -34,18 +34,33 @@ make_EHelper(cmp) {
 
 make_EHelper(inc) {
   t0 = id_dest->val + 1;
+  t1 = (t0 < id_dest->val);
+  rtl_set_CF(&t1);
+  t1 = (((id_dest->val < 0) == (1 < 0)) && ((t0 < 0) != (id_dest->val < 0)));
+  rtl_set_OF(&t1);
+  rtl_update_ZFSF(&t0, 4);
   rtl_sr(id_dest->reg, 4, &t0);
   print_asm_template1(inc);
 }
 
 make_EHelper(dec) {
   t0 = id_dest->val - 1;
+  t1 = (t0 > id_dest->val);
+  rtl_set_CF(&t1);
+  t1 = (((id_dest->val < 0) == (-1 < 0)) && ((t0 < 0) != (id_dest->val < 0)));
+  rtl_set_OF(&t1);
+  rtl_update_ZFSF(&t0, 4);
   rtl_sr(id_dest->reg, 4, &t0);
   print_asm_template1(dec);
 }
 
 make_EHelper(neg) {
   t0 = -id_dest->val;
+  t1 = (id_dest->val != 0);
+  rtl_set_CF(&t1);
+  t1 = ((id_dest->val < 0) == (-id_dest->val < 0));
+  rtl_set_OF(&t1);
+  rtl_update_ZFSF(&t0, 4);
   rtl_sr(id_dest->reg, 4, &t0);
   print_asm_template1(neg);
 }
