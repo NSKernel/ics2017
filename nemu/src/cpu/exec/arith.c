@@ -37,6 +37,8 @@ make_EHelper(cmp) {
   printf("src >> 31 = %d\n", id_src->val >> 31);
   printf("t0 = %d\n", t0);
   t1 = (((id_dest->val < 0) == ((id_src->val >> 31) == 0)) && ((t0 < 0) != (id_dest->val < 0)));
+  printf("OF = %d\n", t1);
+  printf("SF = %d\n", t0 < 0);
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   print_asm_template2(cmp);
