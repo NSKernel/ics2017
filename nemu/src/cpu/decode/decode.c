@@ -199,7 +199,6 @@ make_DHelper(test_I) {
 make_DHelper(SI2E) {
   assert(id_dest->width == 2 || id_dest->width == 4);
   decode_op_rm(eip, id_dest, true, NULL, false);
-  printf("this shit works\n");
   id_src->width = 1;
   decode_op_SI(eip, id_src, true);
   if (id_dest->width == 2) {
