@@ -9,6 +9,7 @@ make_EHelper(test) {
 }
 
 make_EHelper(and) {
+  printf("0x%08X, 0x%08X\n", id_dest->val, id_src->val);
   rtl_and(&t0, &id_dest->val, &id_src->val);
   rtl_set_OF(&tzero);
   rtl_set_CF(&tzero);
