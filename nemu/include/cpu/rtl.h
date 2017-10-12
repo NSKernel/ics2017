@@ -43,6 +43,20 @@ make_rtl_arith_logic(sar)
 make_rtl_arith_logic(slt)
 make_rtl_arith_logic(sltu)
 
+static inline void rtl_ror(rtlreg_t* dest, const rtlreg_t* src1, const rtlreg_t* src2, int width) {
+  uint32_t src2eff = *src2 % (width * 8);
+  uint32_t partlow = ((*src1 & (((uint32_t)(0xFFFFFFFF) >> (32 - width * 8)) >> (width * 8 - src2eff))) << (width * 8 - src2eff));
+  uint32_t partup = ((*src1 & ((((uint32_t)(0xFFFFFFFF) >> (32 - width * 8)) >> (src2eff)) << src2eff)) >> (src2eff));
+  *dest = partlow | partup;
+}
+
+static inline void rtl_rol(rtlreg_t* dest, const rtlreg_t* src1, const rtlreg_t* src2, int width) {
+  uint32_t src2eff = *src2 % (width * 8);
+  uint32_t partlow = ((*src1 & (((uint32_t)(0xFFFFFFFF) >> (32 - width * 8)) >> src2eff)) << (src2eff));
+  uint32_t partup = ((*src1 & ((((uint32_t)(0xFFFFFFFF) >> (32 - width * 8)) >> (width * 8 - src2eff) << (width * 8 - src2eff)))) >> (width * 8 - src2eff));
+  *dest = partlow | partup;
+}
+
 static inline void rtl_mul(rtlreg_t* dest_hi, rtlreg_t* dest_lo, const rtlreg_t* src1, const rtlreg_t* src2) {
   asm volatile("mul %3" : "=d"(*dest_hi), "=a"(*dest_lo) : "a"(*src1), "r"(*src2));
 }
