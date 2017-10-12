@@ -74,7 +74,7 @@ make_EHelper(rol) {
 }
 
 make_EHelper(ror) {
-  rtl_rol(&t0, &id_dest->val, &id_src->val, id_dest->width);
+  rtl_ror(&t0, &id_dest->val, &id_src->val, id_dest->width);
   // unnecessary to update CF and OF in NEMU
   // here we leave CF and OF unchanged
   rtl_update_ZFSF(&t0, id_dest->width);
