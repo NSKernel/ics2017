@@ -37,7 +37,9 @@ make_EHelper(or) {
 
 make_EHelper(sar) {
   int32_t tempint = id_dest->val;
+  printf("orgval = 0x%08X\n", tempint);
   tempint = ((tempint << (8 * (4 - id_dest->width))) >> (8 * (4 - id_dest->width)));
+  printf("afterval = 0x%08X\n", tempint);
   rtl_sar(&t0, (uint32_t*)(&tempint), &id_src->val);
   // unnecessary to update CF and OF in NEMU
   // here we leave CF and OF unchanged
