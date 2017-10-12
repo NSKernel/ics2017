@@ -9,7 +9,13 @@ make_EHelper(test) {
 }
 
 make_EHelper(and) {
-  printf("0x%08X, 0x%08X\n", id_dest->val, id_src->val);
+  printf("eip = 0x%08X, 0x%08X, 0x%08X\n", cpu.eip, id_dest->val, id_src->val);
+  int instr_len = decoding.seq_eip - cpu.eip;
+  sprintf(decoding.p, "%*.s", 50 - (12 + 3 * instr_len), "");
+  strcat(decoding.asm_buf, decoding.assembly);
+  Log_write("%s\n", decoding.asm_buf);
+  puts(decoding.asm_buf);
+  
   rtl_and(&t0, &id_dest->val, &id_src->val);
   rtl_set_OF(&tzero);
   rtl_set_CF(&tzero);
@@ -38,9 +44,7 @@ make_EHelper(or) {
 
 make_EHelper(sar) {
   int32_t tempint = id_dest->val;
-  printf("orgval = 0x%08X\n", tempint);
   tempint = ((tempint << (8 * (4 - id_dest->width))) >> (8 * (4 - id_dest->width)));
-  printf("afterval = 0x%08X\n", tempint);
   rtl_sar(&t0, (uint32_t*)(&tempint), &id_src->val);
   // unnecessary to update CF and OF in NEMU
   // here we leave CF and OF unchanged
