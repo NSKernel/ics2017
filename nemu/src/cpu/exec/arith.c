@@ -8,7 +8,7 @@ make_EHelper(add) {
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   if(id_dest->type == OP_TYPE_REG)
-    rtl_sr(id_dest->reg, 4, &t0);
+    rtl_sr(id_dest->reg, id_dest->width, &t0);
   else if(id_dest->type == OP_TYPE_MEM)
     rtl_sm(&(id_dest->addr), id_dest->width, &t0);  
   print_asm_template2(add);
@@ -22,7 +22,7 @@ make_EHelper(sub) {
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   if(id_dest->type == OP_TYPE_REG)
-    rtl_sr(id_dest->reg, 4, &t0);
+    rtl_sr(id_dest->reg, id_dest->width, &t0);
   else if(id_dest->type == OP_TYPE_MEM)
     rtl_sm(&(id_dest->addr), id_dest->width, &t0);
   print_asm_template2(sub);
@@ -46,7 +46,7 @@ make_EHelper(inc) {
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   if(id_dest->type == OP_TYPE_REG)
-    rtl_sr(id_dest->reg, 4, &t0);
+    rtl_sr(id_dest->reg, id_dest->width, &t0);
   else if(id_dest->type == OP_TYPE_MEM)
     rtl_sm(&(id_dest->addr), id_dest->width, &t0);
   print_asm_template1(inc);
@@ -60,7 +60,7 @@ make_EHelper(dec) {
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   if(id_dest->type == OP_TYPE_REG)
-    rtl_sr(id_dest->reg, 4, &t0);
+    rtl_sr(id_dest->reg, id_dest->width, &t0);
   else if(id_dest->type == OP_TYPE_MEM)
     rtl_sm(&(id_dest->addr), id_dest->width, &t0);
   print_asm_template1(dec);
@@ -74,7 +74,7 @@ make_EHelper(neg) {
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   if(id_dest->type == OP_TYPE_REG)
-    rtl_sr(id_dest->reg, 4, &t0);
+    rtl_sr(id_dest->reg, id_dest->width, &t0);
   else if(id_dest->type == OP_TYPE_MEM)
     rtl_sm(&(id_dest->addr), id_dest->width, &t0);
   print_asm_template1(neg);

@@ -48,3 +48,6 @@ make_EHelper(operand_size);
 make_EHelper(nop);
 make_EHelper(inv);
 make_EHelper(nemu_trap);
+
+make_EHelper(in);
+make_EHelper(out);
