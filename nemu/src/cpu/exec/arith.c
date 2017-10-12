@@ -22,10 +22,10 @@ make_EHelper(sub) {
   rtl_sext(&t2, &id_src->val, id_src->width);
   
   rtl_sub(&t0, &t1, &t2);
-  t1 = (t0 > id_dest->val);
-  rtl_set_CF(&t1);
-  t1 = ((((int32_t)(id_dest->val) < 0) == ((id_src->val >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(id_dest->val) < 0)));
-  rtl_set_OF(&t1);
+  t3 = (t0 > t1);
+  rtl_set_CF(&t3);
+  t3 = ((((int32_t)(t1) < 0) == ((t2 >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t1) < 0)));
+  rtl_set_OF(&t3);
   rtl_update_ZFSF(&t0, 4);
   if(id_dest->type == OP_TYPE_REG)
     rtl_sr(id_dest->reg, id_dest->width, &t0);
@@ -39,12 +39,10 @@ make_EHelper(cmp) {
   rtl_sext(&t2, &id_src->val, id_src->width);
   
   rtl_sub(&t0, &t1, &t2);
-  printf("t0 = %d, dest = %d, src = %d\n", t0, t1, t2);
-  t1 = (t0 > id_dest->val);
-  printf("t1 = %d\n", t1);
-  rtl_set_CF(&t1);
-  t1 = ((((int32_t)(id_dest)->val < 0) == ((id_src->val >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(id_dest->val) < 0)));
-  rtl_set_OF(&t1);
+  t3 = (t0 > t1);
+  rtl_set_CF(&t3);
+  t3 = ((((int32_t)(t1) < 0) == ((t2 >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t1) < 0)));
+  rtl_set_OF(&t3);
   rtl_update_ZFSF(&t0, 4);
   print_asm_template2(cmp);
 }
