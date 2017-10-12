@@ -79,7 +79,7 @@ make_EHelper(ror) {
   // here we leave CF and OF unchanged
   rtl_update_ZFSF(&t0, id_dest->width);
   operand_write(id_dest, &t0);
-  print_asm_template2(rol);
+  print_asm_template2(ror);
 }
 
 make_EHelper(setcc) {
