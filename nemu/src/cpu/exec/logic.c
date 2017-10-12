@@ -38,7 +38,7 @@ make_EHelper(or) {
 make_EHelper(sar) {
   int32_t tempint = id_dest->val;
   tempint = ((tempint << (8 * (4 - id_dest->width))) >> (8 * (4 - id_dest->width)));
-  rtl_sar(&t0, (uint32_t*)(&id_dest->val), &id_src->val);
+  rtl_sar(&t0, (uint32_t*)(&tempint), &id_src->val);
   // unnecessary to update CF and OF in NEMU
   // here we leave CF and OF unchanged
   rtl_update_ZFSF(&t0, id_dest->width);
