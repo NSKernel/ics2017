@@ -174,6 +174,10 @@ make_DHelper(I) {
   decode_op_I(eip, id_dest, true);
 }
 
+make_DHelper(SI) {
+  decode_op_SI(eip, id_dest, true);
+}
+
 make_DHelper(r) {
   decode_op_r(eip, id_dest, true);
 }
