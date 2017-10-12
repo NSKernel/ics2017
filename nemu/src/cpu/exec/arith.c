@@ -1,6 +1,9 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
+  rtl_sext(&t1, &id_dest->val, id_dest->width);
+  rtl_sext(&t2, &id_src->val, id_src->width);
+
   rtl_add(&t0, &id_dest->val, &id_src->val);
   t1 = (t0 < id_dest->val);
   rtl_set_CF(&t1);
@@ -15,7 +18,10 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  rtl_sub(&t0, &id_dest->val, &id_src->val);
+  rtl_sext(&t1, &id_dest->val, id_dest->width);
+  rtl_sext(&t2, &id_src->val, id_src->width);
+  
+  rtl_sub(&t0, &t1, &t2);
   t1 = (t0 > id_dest->val);
   rtl_set_CF(&t1);
   t1 = ((((int32_t)(id_dest->val) < 0) == ((id_src->val >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(id_dest->val) < 0)));
@@ -29,23 +35,16 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-  printf("eip = 0x%08X, 0x%08X, 0x%08X\n", cpu.eip, id_dest->val, id_src->val);
+  rtl_sext(&t1, &id_dest->val, id_dest->width);
+  rtl_sext(&t2, &id_src->val, id_src->width);
   
-  
-  
-  rtl_sub(&t0, &id_dest->val, &id_src->val);
+  rtl_sub(&t0, &t1, &t2);
   t1 = (t0 > id_dest->val);
   rtl_set_CF(&t1);
   t1 = ((((int32_t)(id_dest)->val < 0) == ((id_src->val >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(id_dest->val) < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   print_asm_template2(cmp);
-  
-  int instr_len = decoding.seq_eip - cpu.eip;
-  sprintf(decoding.p, "%*.s", 50 - (12 + 3 * instr_len), "");
-  strcat(decoding.asm_buf, decoding.assembly);
-  Log_write("%s\n", decoding.asm_buf);
-  puts(decoding.asm_buf);
 }
 
 make_EHelper(inc) {
