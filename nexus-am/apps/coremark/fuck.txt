@@ -1,0 +1,20 @@
+Building coremark [x86-nemu]
+make[1]: Entering directory '/home/nskernel/ics2017/nexus-am'
+make[2]: Entering directory '/home/nskernel/ics2017/nexus-am/am'
+Building am [x86-nemu]
+make[2]: Nothing to be done for 'archive'.
+make[2]: Leaving directory '/home/nskernel/ics2017/nexus-am/am'
+make[1]: Leaving directory '/home/nskernel/ics2017/nexus-am'
+make[1]: Entering directory '/home/nskernel/ics2017/nexus-am/libs/klib'
+make[1]: Leaving directory '/home/nskernel/ics2017/nexus-am/libs/klib'
+/home/nskernel/ics2017/nexus-am/Makefile.compile:86: recipe for target 'klib' failed
+make[1]: Entering directory '/home/nskernel/ics2017/nemu'
++ CC src/cpu/exec/exec.c
++ LD build/nemu
+./build/nemu -l /home/nskernel/ics2017/nexus-am/apps/coremark/build/nemu-log.txt /home/nskernel/ics2017/nexus-am/apps/coremark/build/coremark-x86-nemu.bin
+[1;34m[src/monitor/monitor.c,65,load_img] The image is /home/nskernel/ics2017/nexus-am/apps/coremark/build/coremark-x86-nemu.bin[0m
+Welcome to NEMU!
+[1;34m[src/monitor/monitor.c,30,welcome] Build time: 19:59:00, Oct 11 2017[0m
+For help, type "help"
+(nemu) ^Cq
+/home/nskernel/ics2017/nexus-am/Makefile.app:35: recipe for target 'run' failed

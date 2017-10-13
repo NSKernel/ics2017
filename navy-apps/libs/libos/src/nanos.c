@@ -4,10 +4,14 @@
 #include <sys/time.h>
 #include <assert.h>
 #include <time.h>
+#include <stdio.h>
 #include "syscall.h"
 
 // TODO: discuss with syscall interface
 #ifndef __ISA_NATIVE__
+
+extern uint32_t end;
+extern uint32_t _end;
 
 // FIXME: this is temporary
 
@@ -26,11 +30,15 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count){
-  _exit(SYS_write);
+  return _syscall_(SYS_write, fd, (uintptr_t)buf, count);
 }
 
 void *_sbrk(intptr_t increment){
-  return (void *)-1;
+  uint32_t lastpb = (uint32_t)&end;
+  if (_syscall_(SYS_brk, (uint32_t)&end + increment, 0, 0) == 0)
+    return (void*)lastpb;
+  else
+    return (void*)-1;
 }
 
 int _read(int fd, void *buf, size_t count) {

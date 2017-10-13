@@ -1,6 +1,7 @@
 #include "common.h"
 #include "syscall.h"
 
+
 uintptr_t sys_write(int fd, const void *buf, size_t count) {
   uintptr_t succ = 0;
   //Log("Print char");
