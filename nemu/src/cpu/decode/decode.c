@@ -186,6 +186,12 @@ make_DHelper(E) {
   decode_op_rm(eip, id_dest, true, NULL, false);
 }
 
+make_DHelper(int3) {
+  id_dest->type = OP_TYPE_IMM;
+  id_dest->imm = 3;
+  rtl_li(&id_dest->val, id_dest->imm);
+}
+
 make_DHelper(J_gp5) {
   // for use with call r/m
   // the target address can be computed in the decode stage
