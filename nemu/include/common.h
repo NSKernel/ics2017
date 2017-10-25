@@ -9,6 +9,8 @@
 #include "debug.h"
 #include "macro.h"
 
+volatile static int dummy;
+
 #include <stdint.h>
 #include <assert.h>
 #include <string.h>
