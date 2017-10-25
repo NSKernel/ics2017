@@ -9,7 +9,7 @@
 #include "debug.h"
 #include "macro.h"
 
-volatile static int dummy;
+volatile static int dummyfuck;
 
 #include <stdint.h>
 #include <assert.h>
