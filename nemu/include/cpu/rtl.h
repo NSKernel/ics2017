@@ -8,7 +8,7 @@ extern const rtlreg_t tzero;
 
 /* RTL basic instructions */
 
- inline void rtl_li(rtlreg_t* dest, uint32_t imm) {
+static inline void rtl_li(rtlreg_t* dest, uint32_t imm) {
   *dest = imm;
 }
 
