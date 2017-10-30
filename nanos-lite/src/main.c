@@ -34,7 +34,6 @@ int main() {
   uint32_t fuck = 0;
   fuck = 1;
   if(fuck)
-  Log("Jumpto 0x%08X", entry);
   ((void (*)(void))entry)();
 
   panic("Should not reach here");

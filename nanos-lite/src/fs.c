@@ -66,7 +66,6 @@ off_t fs_lseek(int fd, off_t offset, int whence) {
       break;
     case SEEK_END:
       file_table[fd].open_offset = fs_filesz(fd) + offset;
-      Log("Hit seek end. openoffset is %d", file_table[fd].open_offset);
       break;
     default:
       assert("ASSERT: Unexpected whence in fs_lseek");
