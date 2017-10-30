@@ -11,5 +11,5 @@ extern size_t get_ramdisk_size();
 uintptr_t loader(_Protect *as, const char *filename) {
   ramdisk_read((void*)0x4000000, 0, get_ramdisk_size());
   
-  return fs_getdiskoffset(fs_open(filename, 0, 0));
+  return fs_getdiskoffset(fs_open(filename, 0, 0)) + (uintptr_t)DEFAULT_ENTRY;
 }
