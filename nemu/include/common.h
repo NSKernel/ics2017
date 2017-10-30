@@ -22,6 +22,8 @@ typedef uint32_t vaddr_t;
 
 typedef uint16_t ioaddr_t;
 
+bool alwaysprintasm;
+
 #define false 0
 #define true 1
 

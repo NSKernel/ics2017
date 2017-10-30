@@ -193,6 +193,11 @@ static int cmd_d(char *args) {
   return 0;
 }
 
+static int cmd_a(char *args) {
+  alwaysprintasm = !alwaysprintasm;
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -208,7 +213,8 @@ static struct {
   { "p", "EXPR - Evaluate expression", cmd_p },
   { "x", "N EXPR - Output 4N bytes from the address evaluated form EXPR", cmd_x },
   { "w", "EXPR - Set a watchpoint at the address evaluated from EXPR", cmd_w },
-  { "d", "N - Delete the watchpoint numbered N", cmd_d }
+  { "d", "N - Delete the watchpoint numbered N", cmd_d },
+  { "a", "Trigger always print the assembly code", cmd_a }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -237,6 +243,7 @@ static int cmd_help(char *args) {
 }
 
 void ui_mainloop(int is_batch_mode) {
+  alwaysprintasm = false;
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
