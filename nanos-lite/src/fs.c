@@ -80,6 +80,7 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
   ssize_t bytesread = ((file_table[fd].open_offset + len <= fs_filesz(fd)) ? len : fs_filesz(fd) - file_table[fd].open_offset);
   if (bytesread >= 0) {
     ramdisk_read(buf, file_table[fd].open_offset + file_table[fd].disk_offset, bytesread);
+    file_table[fd].open_offset += bytesread;
     return bytesread;
   }
   return 0;
@@ -98,6 +99,7 @@ ssize_t fs_write(int fd, const void *buf, size_t len) {
   byteswritten = ((file_table[fd].open_offset + len <= fs_filesz(fd)) ? len : fs_filesz(fd) - file_table[fd].open_offset);
   if (byteswritten >= 0) {
     ramdisk_write(buf, file_table[fd].open_offset + file_table[fd].disk_offset, byteswritten);
+    file_table[fd].open_offset += byteswritten;
     return byteswritten;
   }
   return 0;
