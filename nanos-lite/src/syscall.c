@@ -9,6 +9,7 @@ uintptr_t sys_write(int fd, const void *buf, size_t count) {
     while(count--) {
       _putc(((char*)buf)[succ]);
       succ++;
+      Log("Shit!\n");
     }
   }
   return succ;
