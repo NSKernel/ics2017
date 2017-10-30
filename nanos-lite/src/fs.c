@@ -33,7 +33,6 @@ int fs_open(const char *pathname, int flags, int mode) {
   int i;
   for (i = 0; i < NR_FILES; i++) {
     if (!strcmp(pathname, file_table[i].name)) {
-      Log("\n\nShit i is %d\n\n", i);
       file_table[i].open_offset = 0;
       return i;
     }
@@ -43,7 +42,8 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 
 uintptr_t fs_getdiskoffset(int fd) {
-   return file_table[fd].disk_offset;
+  Log("\n\nCurrent offset of file %d is %d aka. 0x%08X\n\n", fd, file_table[fd].disk_offset, file_table[fd].disk_offset);
+  return file_table[fd].disk_offset;
 }
 
 int fs_close(int fd) {
