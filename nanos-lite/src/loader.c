@@ -18,5 +18,5 @@ uintptr_t loader(_Protect *as, const char *filename) {
   fs_read(fd, DEFAULT_ENTRY, fs_filesz(fd));
   fs_close(fd);
   
-  return fs_getdiskoffset(fs_open(filename, 0, 0)) + (uintptr_t)DEFAULT_ENTRY;
+  return (uintptr_t)DEFAULT_ENTRY;
 }
