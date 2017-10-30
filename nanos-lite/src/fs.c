@@ -39,7 +39,7 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
-  assert("ASSERT: File not found in fs_open.");
+  panic("PANIC: File not found in fs_open.");
   return -1;
 }
 
