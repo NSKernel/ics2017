@@ -13,6 +13,8 @@
 extern uint32_t end;
 extern uint32_t _end;
 
+uint32_t lastpb = (uint32_t)&end;
+
 // FIXME: this is temporary
 
 int _syscall_(int type, uintptr_t a0, uintptr_t a1, uintptr_t a2){
@@ -34,9 +36,11 @@ int _write(int fd, void *buf, size_t count){
 }
 
 void *_sbrk(intptr_t increment){
-  uint32_t lastpb = (uint32_t)&end;
-  if (_syscall_(SYS_brk, (uint32_t)&end + increment, 0, 0) == 0)
-    return (void*)lastpb;
+  uint32_t lasttimepb = lastpb;
+  if (_syscall_(SYS_brk, (uint32_t)&lastpb + increment, 0, 0) == 0) {
+    lastpb += increment;
+    return (void*)lasttimepb;
+  }
   else
     return (void*)-1;
 }
