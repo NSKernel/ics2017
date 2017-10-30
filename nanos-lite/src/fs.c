@@ -86,6 +86,7 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
 
 ssize_t fs_write(int fd, const void *buf, size_t len) {
   ssize_t byteswritten;
+  Log("\n\nCalled fs_write\n\n");
   if (fd == 1 || fd == 2) {
     Log("\n\nCalled fs_write to write stdout\n\n");
     byteswritten = 0;
