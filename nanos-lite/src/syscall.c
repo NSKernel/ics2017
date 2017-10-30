@@ -4,12 +4,8 @@
 
 uintptr_t sys_write(int fd, const void *buf, size_t count) {
   uintptr_t succ = 0;
-  Log("Buf is 0x%08X", buf);
-  Log("Content is %s", buf);
-  Log("Print char");
   if (fd == 1 || fd == 2) {
     while(count--) {
-      Log("Shit!");
       _putc(((char*)buf)[succ]);
       succ++;
     }
