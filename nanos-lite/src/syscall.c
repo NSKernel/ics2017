@@ -4,7 +4,7 @@
 
 uintptr_t sys_write(int fd, const void *buf, size_t count) {
   uintptr_t succ = 0;
-  Log("Print char");
+  //Log("Print char");
   if (fd == 1 || fd == 2) {
     while(count--) {
       _putc(((char*)buf)[succ]);
