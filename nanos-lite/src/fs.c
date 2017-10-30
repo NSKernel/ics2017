@@ -32,6 +32,7 @@ void init_fs() {
 int fs_open(const char *pathname, int flags, int mode) {
   int i;
   for (i = 0; i < NR_FILES; i++) {
+    Log("\n\nShit i is %d\n\n", i);
     if (!strcmp(pathname, file_table[i].name)) {
       Log("\n\nShit i is %d\n\n", i);
       file_table[i].open_offset = 0;
