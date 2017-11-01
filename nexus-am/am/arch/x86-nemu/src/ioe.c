@@ -28,6 +28,7 @@ ssize_t _copy_pixle(const uint32_t *pixels, off_t offset, size_t len) {
   if (offset + len > _screen.width * _screen.height * 4) {
     written = _screen.width * _screen.height * 4 - offset;
   }
+  _putc('c');
   if (written > 0)
     memcpy(fb + offset, pixels, (ssize_t)written);
   else
