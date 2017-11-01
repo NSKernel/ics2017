@@ -2,6 +2,7 @@
 
 extern void ramdisk_write(const void *buf, off_t offset, size_t len);
 extern void ramdisk_read(void *buf, off_t offset, size_t len);
+extern ssize_t dispinfo_read(void *buf, off_t offset, size_t len);
 
 typedef struct {
   char *name;
@@ -77,15 +78,13 @@ off_t fs_lseek(int fd, off_t offset, int whence) {
 
 ssize_t fs_read(int fd, void *buf, size_t len) {
   ssize_t bytesread;
-  char *src = (char *)filedispinfo;
   switch (fd) {
     case 0:
     case 1:
     case 2:
       break;
     case FD_DISPINFO:
-      while((*(char *)buf++ = *src++));
-      return sizeof(filedispinfo);
+      return dispinfo_read(buf, file_table[fd].open_offset, len);
     default:
       bytesread = ((file_table[fd].open_offset + len <= fs_filesz(fd)) ? len : fs_filesz(fd) - file_table[fd].open_offset);
       if (bytesread >= 0) {

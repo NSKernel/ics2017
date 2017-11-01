@@ -6,7 +6,7 @@
   [_KEY_##key] = #key,
   
 extern _Screen _screen;
-extern void _copy_pixle(const uint32_t *pixels, off_t offset, size_t len);
+extern ssize_t _copy_pixle(const uint32_t *pixels, off_t offset, size_t len);
 
 static const char *keyname[256] __attribute__((used)) = {
   [_KEY_NONE] = "NONE",
@@ -19,10 +19,16 @@ size_t events_read(void *buf, size_t len) {
 
 static char dispinfo[128] __attribute__((used));
 
-void dispinfo_read(void *buf, off_t offset, size_t len) {
+ssize_t dispinfo_read(void *buf, off_t offset, size_t len) {
+  ssize_t it = 0;
+  for (; it < len && offset + it <= strlen(dispinfo); it++) {
+    ((char *)buf)[it] = dispinfo[offset + it];
+  }
+  return it;
 }
 
-void fb_write(const void *buf, off_t offset, size_t len) {
+ssize_t fb_write(const void *buf, off_t offset, size_t len) {
+  return _copy_pixle((uint32_t *)buf, offset, len);
 }
 
 void init_device() {
