@@ -3,6 +3,7 @@
 extern void ramdisk_write(const void *buf, off_t offset, size_t len);
 extern void ramdisk_read(void *buf, off_t offset, size_t len);
 extern ssize_t dispinfo_read(void *buf, off_t offset, size_t len);
+extern ssize_t fb_write(const void *buf, off_t offset, size_t len);
 
 typedef struct {
   char *name;
@@ -111,8 +112,9 @@ ssize_t fs_write(int fd, const void *buf, size_t len) {
       }
       return byteswritten;
     case FD_FB:
-      
-      break;
+      byteswritten = fb_write(buf, file_table[fd].open_offset, len);
+      file_table[fd].open_offset += byteswritten;
+      return byteswritten;
     case FD_DISPINFO:
       // read only
       return 0;
