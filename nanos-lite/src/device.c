@@ -32,8 +32,7 @@ size_t events_read(void *buf, size_t len) {
     return retsize;
   }
   else {
-    Log("_uptime is %d", _uptime());
-    sprintf(buffer, "t %l\n", _uptime());
+    sprintf(buffer, "t %d\n", _uptime());
     retsize = strlen(buffer) > len ? len : strlen(buffer);
     memcpy(buf, buffer, retsize);
     return retsize;
