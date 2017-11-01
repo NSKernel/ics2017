@@ -78,6 +78,7 @@ off_t fs_lseek(int fd, off_t offset, int whence) {
 ssize_t fs_read(int fd, void *buf, size_t len) {
   ssize_t bytesread;
   char *src = (char *)filedispinfo;
+  Log("dispinfo size is %d", sizeof(filedispinfo));
   switch (fd) {
     case 0:
     case 1:
