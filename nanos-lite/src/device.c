@@ -33,6 +33,7 @@ size_t events_read(void *buf, size_t len) {
   }
   else {
     sprintf(buffer, "t %lu\n", _uptime());
+    Log("cufk");
     retsize = strlen(buffer) > len ? len : strlen(buffer);
     memcpy(buf, buffer, retsize);
     return retsize;
