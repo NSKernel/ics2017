@@ -61,6 +61,8 @@ size_t fs_filesz(int fd) {
 off_t fs_lseek(int fd, off_t offset, int whence) {
   if (fd < 3)
     return 0;
+  if(fd == FD_FB)
+    Log("fuck!");
   switch (whence) {
     case SEEK_SET:
       file_table[fd].open_offset = offset;
