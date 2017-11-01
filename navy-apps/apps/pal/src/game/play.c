@@ -63,10 +63,9 @@ PAL_GameUpdate(
          gpGlobals->fEnteringScene = FALSE;
 
          i = gpGlobals->wNumScene - 1;
-         printf("in\n");
          gpGlobals->g.rgScene[i].wScriptOnEnter =
             PAL_RunTriggerScript(gpGlobals->g.rgScene[i].wScriptOnEnter, 0xFFFF);
-printf("out\n");
+
          if (gpGlobals->fEnteringScene || gpGlobals->fGameStart)
          {
             //
@@ -508,7 +507,6 @@ PAL_StartFrame(
 
 --*/
 {
-   printf("start\n"); 
    //
    // Run the game logic of one frame
    //
@@ -517,21 +515,16 @@ PAL_StartFrame(
    {
       return;
    }
-    
-   printf("ok\n"); 
    
    //
    // Update the positions and gestures of party members
    //
    PAL_UpdateParty();
    
-   printf("good\n");
-   
    //
    // Update the scene
    //
    PAL_MakeScene();
-   printf("treffic\n");
    VIDEO_UpdateScreen(NULL);
 
    if (g_InputState.dwKeyPress & kKeyMenu)
