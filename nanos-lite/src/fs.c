@@ -26,7 +26,7 @@ static Finfo file_table[] __attribute__((used)) = {
 #define NR_FILES (sizeof(file_table) / sizeof(file_table[0]))
 
 void init_fs() {
-  file_table[3].size = 400 * 320 * 4;
+  file_table[FD_FB].size = 400 * 320 * 4;
 }
 
 int fs_open(const char *pathname, int flags, int mode) {
@@ -87,19 +87,26 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
 
 ssize_t fs_write(int fd, const void *buf, size_t len) {
   ssize_t byteswritten;
-  if (fd == 1 || fd == 2) {
-    byteswritten = 0;
-    while(len--) {
-      _putc(((char*)buf)[byteswritten]);
-      byteswritten++;
-    }
-    return byteswritten;
-  }
-  byteswritten = ((file_table[fd].open_offset + len <= fs_filesz(fd)) ? len : fs_filesz(fd) - file_table[fd].open_offset);
-  if (byteswritten >= 0) {
-    ramdisk_write(buf, file_table[fd].open_offset + file_table[fd].disk_offset, byteswritten);
-    file_table[fd].open_offset += byteswritten;
-    return byteswritten;
+  switch (fd) {
+    case 1:
+    case 2:
+      byteswritten = 0;
+      while(len--) {
+        _putc(((char*)buf)[byteswritten]);
+        byteswritten++;
+      }
+      return byteswritten;
+    case FD_FB:
+      
+      break;
+    default:
+      byteswritten = ((file_table[fd].open_offset + len <= fs_filesz(fd)) ? len : fs_filesz(fd) - file_table[fd].open_offset);
+      if (byteswritten >= 0) {
+        ramdisk_write(buf, file_table[fd].open_offset + file_table[fd].disk_offset, byteswritten);
+        file_table[fd].open_offset += byteswritten;
+        return byteswritten;
+      }
+      return 0;
   }
   return 0;
 }
