@@ -65,18 +65,12 @@ off_t fs_lseek(int fd, off_t offset, int whence) {
   switch (whence) {
     case SEEK_SET:
       file_table[fd].open_offset = offset;
-      if (fd == FD_FB)
-        Log("SET: 0x%08X", offset);
       break;
     case SEEK_CUR:
       file_table[fd].open_offset += offset;
-      if (fd == FD_FB)
-        Log("CUR: 0x%08X", offset);
       break;
     case SEEK_END:
       file_table[fd].open_offset = fs_filesz(fd) + offset;
-      if (fd == FD_FB)
-        Log("END: 0x%08X", offset);
       break;
     default:
       assert("ASSERT: Unexpected whence in fs_lseek");
