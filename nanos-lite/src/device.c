@@ -21,7 +21,7 @@ static char dispinfo[128] __attribute__((used));
 
 ssize_t dispinfo_read(void *buf, off_t offset, size_t len) {
   ssize_t it = 0;
-  for (; it < len && offset + it <= 128; it++) {
+  for (; it < len && offset + it < 128; it++) {
     ((char *)buf)[it] = dispinfo[offset + it];
   }
   Log("it = %d", it);

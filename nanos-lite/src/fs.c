@@ -84,7 +84,9 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
     case 2:
       break;
     case FD_DISPINFO:
-      return dispinfo_read(buf, file_table[fd].open_offset, len);
+      bytesread = dispinfo_read(buf, file_table[fd].open_offset, len);
+      file_table[fd].open_offset += bytesread;
+      return bytesread;
     default:
       bytesread = ((file_table[fd].open_offset + len <= fs_filesz(fd)) ? len : fs_filesz(fd) - file_table[fd].open_offset);
       if (bytesread >= 0) {
