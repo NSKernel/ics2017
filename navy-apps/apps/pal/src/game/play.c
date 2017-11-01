@@ -520,11 +520,14 @@ PAL_StartFrame(
    // Update the positions and gestures of party members
    //
    PAL_UpdateParty();
-
+   
+   printf("good\n");
+   
    //
    // Update the scene
    //
    PAL_MakeScene();
+   printf("treffic\n");
    VIDEO_UpdateScreen(NULL);
 
    if (g_InputState.dwKeyPress & kKeyMenu)
