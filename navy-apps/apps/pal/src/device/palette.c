@@ -162,25 +162,19 @@ PAL_FadeOut(
       //
       // Set the current palette...
       //
-      Log("Good 0\n");
       j = (int)(time - SDL_GetTicks()) / iDelay / 10;
-      Log("Good 1\n");
       if (j < 0)
       {
          break;
       }
-Log("Good2\n");
       for (i = 0; i < 256; i++)
       {
          newpalette[i].r = (palette[i].r * j) >> 6;
          newpalette[i].g = (palette[i].g * j) >> 6;
          newpalette[i].b = (palette[i].b * j) >> 6;
       }
-Log("Good3\n");
       VIDEO_SetPalette(newpalette);
-Log("Good4\n");
       UTIL_Delay(10);
-      Log("Good5\n");
    }
    
    memset(newpalette, 0, sizeof(newpalette));
