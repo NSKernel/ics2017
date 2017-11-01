@@ -234,6 +234,8 @@ PAL_TrademarkScreen(
    PAL_SetPalette(3, FALSE);
    PAL_RNGPlay(6, 0, 1000, 25);
    UTIL_Delay(1000);
+   
+   Log("Trademark not faded\n");
    PAL_FadeOut(1);
    
    Log("Trademark done\n");
