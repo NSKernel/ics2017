@@ -2,6 +2,9 @@
 
 #define NAME(key) \
   [_KEY_##key] = #key,
+  
+extern _Screen _screen;
+extern void _copy_pixle(const uint32_t *pixels, off_t offset, size_t len);
 
 static const char *keyname[256] __attribute__((used)) = {
   [_KEY_NONE] = "NONE",
