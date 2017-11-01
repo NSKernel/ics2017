@@ -113,7 +113,7 @@ ssize_t fs_write(int fd, const void *buf, size_t len) {
       return byteswritten;
     case FD_FB:
       byteswritten = fb_write(buf, file_table[fd].open_offset, len);
-      
+      Log("Drawed");
       file_table[fd].open_offset += byteswritten;
       return byteswritten;
     case FD_DISPINFO:
