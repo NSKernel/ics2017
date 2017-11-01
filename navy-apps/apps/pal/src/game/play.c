@@ -63,9 +63,10 @@ PAL_GameUpdate(
          gpGlobals->fEnteringScene = FALSE;
 
          i = gpGlobals->wNumScene - 1;
+         printf("in\n");
          gpGlobals->g.rgScene[i].wScriptOnEnter =
             PAL_RunTriggerScript(gpGlobals->g.rgScene[i].wScriptOnEnter, 0xFFFF);
-
+printf("out\n");
          if (gpGlobals->fEnteringScene || gpGlobals->fGameStart)
          {
             //
