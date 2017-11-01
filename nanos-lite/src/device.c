@@ -21,8 +21,7 @@ static char dispinfo[128] __attribute__((used));
 
 ssize_t dispinfo_read(void *buf, off_t offset, size_t len) {
   ssize_t it = 0;
-  if ((int)offset < 0)
-    Log("fuck!");
+  
   for (; it < len && offset + it < 128; it++) {
     ((char *)buf)[it] = dispinfo[offset + it];
   }
@@ -31,6 +30,9 @@ ssize_t dispinfo_read(void *buf, off_t offset, size_t len) {
 }
 
 ssize_t fb_write(const void *buf, off_t offset, size_t len) {
+  if ((int)offset < 0)
+    Log("fuck!");
+  
   return _copy_pixle((uint32_t *)buf, offset, len);
 }
 
