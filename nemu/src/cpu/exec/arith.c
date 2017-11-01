@@ -219,14 +219,20 @@ make_EHelper(div) {
 }
 
 make_EHelper(idiv) {
+Log("Good");
   rtl_sext(&id_dest->val, &id_dest->val, id_dest->width);
 
   switch (id_dest->width) {
     case 1:
+      Log("Good 0");
       rtl_lr_w(&t0, R_AX);
+      Log("Good 1");
       rtl_sext(&t0, &t0, 2);
+      Log("Good 2");
       rtl_msb(&t1, &t0, 4);
+      Log("Good 3");
       rtl_sub(&t1, &tzero, &t1);
+      Log("Good 4");
       break;
     case 2:
       rtl_lr_w(&t0, R_AX);
@@ -242,10 +248,13 @@ make_EHelper(idiv) {
       break;
     default: assert(0);
   }
-
+  
+  Log("Good 5");
   rtl_idiv(&t2, &t3, &t1, &t0, &id_dest->val);
+  Log("Good 6");
 
   rtl_sr(R_EAX, id_dest->width, &t2);
+  Log("Good 7");
   if (id_dest->width == 1) {
     rtl_sr_b(R_AH, &t3);
   }
