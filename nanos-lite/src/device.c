@@ -35,6 +35,7 @@ ssize_t dispinfo_read(void *buf, off_t offset, size_t len) {
 }
 
 ssize_t fb_write(const void *buf, off_t offset, size_t len) {
+  Log("Fuck!");
   return _copy_pixle((uint32_t *)buf, offset, len);
 }
 
