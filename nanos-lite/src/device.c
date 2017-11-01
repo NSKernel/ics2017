@@ -1,17 +1,11 @@
 #include "common.h"
 
-#define sticktog(a, b) a ## b
-
 #define NAME(key) \
   [_KEY_##key] = #key,
   
 extern _Screen _screen;
 extern ssize_t _copy_pixle(const uint32_t *pixels, off_t offset, size_t len);
 extern uint32_t* const fb;
-
-
-
-
 
 static const char *keyname[256] __attribute__((used)) = {
   [_KEY_NONE] = "NONE",
@@ -35,7 +29,6 @@ ssize_t dispinfo_read(void *buf, off_t offset, size_t len) {
 }
 
 ssize_t fb_write(const void *buf, off_t offset, size_t len) {
-  Log("Fuck!");
   return _copy_pixle((uint32_t *)buf, offset, len);
 }
 
