@@ -162,6 +162,7 @@ PAL_FadeOut(
       //
       // Set the current palette...
       //
+      Log("Good 0\n");
       j = (int)(time - SDL_GetTicks()) / iDelay / 10;
       Log("Good 1\n");
       if (j < 0)
