@@ -81,7 +81,9 @@ void SDL_WaitUntil(uint32_t tick) {
 }
 
 uint32_t SDL_GetTicks() {
+  Log("Good Tick1\n");
   return systime;
+  Log("Good Tick2\n");
 }
 
 void SDL_Delay(uint32_t ms) {
