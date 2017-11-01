@@ -30,7 +30,7 @@ ssize_t _copy_pixle(const uint32_t *pixels, off_t offset, size_t len) {
   }
   
   if (written > 0) 
-    memcpy(fb + offset, pixels, (ssize_t)written);
+    memcpy((char *)fb + offset, pixels, (ssize_t)written);
   else
     written = 0;
   return written;
