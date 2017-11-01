@@ -5,9 +5,9 @@ make_EHelper(add) {
   rtl_sext(&t3, &id_src->val, id_src->width);
 
   rtl_add(&t0, &t2, &t3);
-  t1 = (t0 < id_dest->val);
+  t1 = (t0 < t2);
   rtl_set_CF(&t1);
-  t1 = ((((int32_t)(id_dest->val) < 0) == ((int32_t)(id_src->val) < 0)) && (((int32_t)(t0) < 0) != ((int32_t)(id_dest->val) < 0)));
+  t1 = ((((int32_t)(t2) < 0) == ((int32_t)(t3) < 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t2) < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   operand_write(id_dest, &t0);
@@ -21,7 +21,7 @@ make_EHelper(sub) {
   rtl_sub(&t0, &t1, &t2);
   t3 = (t0 > t1);
   rtl_set_CF(&t3);
-  t3 = ((((int32_t)(t1) < 0) == ((t2 >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t1) < 0)));
+  t3 = ((((int32_t)(t1) < 0) == (((int32_t)(t2) >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t1) < 0)));
   rtl_set_OF(&t3);
   rtl_update_ZFSF(&t0, 4);
   operand_write(id_dest, &t0);
@@ -35,7 +35,7 @@ make_EHelper(cmp) {
   rtl_sub(&t0, &t1, &t2);
   t3 = (t0 > t1);
   rtl_set_CF(&t3);
-  t3 = ((((int32_t)(t1) < 0) == ((t2 >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t1) < 0)));
+  t3 = ((((int32_t)(t1) < 0) == (((int32_t)(t2) >> 31) == 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t1) < 0)));
   rtl_set_OF(&t3);
   rtl_update_ZFSF(&t0, 4);
   print_asm_template2(cmp);
@@ -47,7 +47,7 @@ make_EHelper(inc) {
   t0 = t0 + 1;
   t1 = (t0 < t2);
   rtl_set_CF(&t1);
-  t1 = (((t2 < 0) == (1 < 0)) && ((t0 < 0) != (t2 < 0)));
+  t1 = ((((int32_t)(t2) < 0) == (1 < 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t2) < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   operand_write(id_dest, &t0);
@@ -56,10 +56,11 @@ make_EHelper(inc) {
 
 make_EHelper(dec) {
   rtl_sext(&t0, &id_dest->val, id_dest->width);
+  rtl_sext(&t2, &id_dest->val, id_dest->width);
   t0 = t0 - 1;
-  t1 = (t0 > id_dest->val);
+  t1 = (t0 > 52);
   rtl_set_CF(&t1);
-  t1 = (((id_dest->val < 0) == (-1 < 0)) && ((t0 < 0) != (id_dest->val < 0)));
+  t1 = ((((int32_t)(t2) < 0) == (-1 < 0)) && (((int32_t)(t0) < 0) != ((int32_t)(t2) < 0)));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   operand_write(id_dest, &t0);
@@ -67,10 +68,12 @@ make_EHelper(dec) {
 }
 
 make_EHelper(neg) {
-  t0 = -id_dest->val;
-  t1 = (id_dest->val != 0);
+  rtl_sext(&t0, &id_dest->val, id_dest->width);
+  rtl_sext(&t2, &id_dest->val, id_dest->width);
+  t0 = -t0;
+  t1 = (t2 != 0);
   rtl_set_CF(&t1);
-  t1 = ((id_dest->val < 0) == (-id_dest->val < 0));
+  t1 = (((int32_t)(t2) < 0) == (-(int32_t)(t2) < 0));
   rtl_set_OF(&t1);
   rtl_update_ZFSF(&t0, 4);
   operand_write(id_dest, &t0);
