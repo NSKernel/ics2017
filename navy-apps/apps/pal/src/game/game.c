@@ -128,8 +128,6 @@ PAL_GameMain(
       //
       dwTime = SDL_GetTicks() + FRAME_TIME;
       
-      printf("Good\n"); 
-      
       //
       // Run the main frame routine.
       //
