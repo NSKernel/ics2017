@@ -24,6 +24,7 @@ ssize_t dispinfo_read(void *buf, off_t offset, size_t len) {
   for (; it < len && offset + it <= 128; it++) {
     ((char *)buf)[it] = dispinfo[offset + it];
   }
+  Log("it = %d", it);
   return it;
 }
 
