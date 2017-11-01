@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* Uncomment these macros to enable corresponding functionality. */
-//#define HAS_ASYE
+#define HAS_ASYE
 //#define HAS_PTE
 
 void init_mm(void);
@@ -30,7 +30,7 @@ int main() {
 
   init_fs();
 
-  uint32_t entry = loader(NULL, "/bin/dummy");
+  uint32_t entry = loader(NULL, "/bin/events");
   ((void (*)(void))entry)();
 
   panic("Should not reach here");
