@@ -3,7 +3,7 @@
 #define PMEM_SIZE (128 * 1024 * 1024)
 
 #define pmem_rw(addr, type) *(type *)({\
-    Assert(addr < PMEM_SIZE, "physical address(0x%08x) is out of bound", addr); \
+    Assert(addr < PMEM_SIZE, "physical address(0x%08x) is out of bound at 0x%08X", addr, cpu.eip); \
     guest_to_host(addr); \
     })
 
