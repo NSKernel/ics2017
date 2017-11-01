@@ -235,6 +235,8 @@ PAL_TrademarkScreen(
    PAL_RNGPlay(6, 0, 1000, 25);
    UTIL_Delay(1000);
    PAL_FadeOut(1);
+   
+   Log("Trademark done\n");
 }
 
 VOID
@@ -505,7 +507,6 @@ PAL_SplashScreen(
    }
 
    PAL_FadeOut(1);
-   Log("Trademark done\n");
 }
 
 void
