@@ -1,5 +1,7 @@
 #include "common.h"
 
+#define sticktog(a, b) a ## b
+
 #define NAME(key) \
   [_KEY_##key] = #key,
   
@@ -26,8 +28,5 @@ void fb_write(const void *buf, off_t offset, size_t len) {
 void init_device() {
   _ioe_init();
   
-  char str[] = "WIDTH:400\nHEIGHT:300";
-  char *src = (char *)str;
-  char *buf = (char *)dispinfo;
-  while((*buf++ = *src++));
+  sprintf(dispinfo, "WIDTH:%d\nHEIGHT:%d", _screen.width, _screen.height);
 }
