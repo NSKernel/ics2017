@@ -127,11 +127,14 @@ PAL_GameMain(
       // Set the time of the next frame.
       //
       dwTime = SDL_GetTicks() + FRAME_TIME;
-
+      
+      printf("Good\n");
+      
       //
       // Run the main frame routine.
       //
       PAL_StartFrame();
+      
 
    }
 }
