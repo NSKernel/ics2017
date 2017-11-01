@@ -515,7 +515,9 @@ PAL_StartFrame(
    {
       return;
    }
-
+    
+   printf("ok\n"); 
+   
    //
    // Update the positions and gestures of party members
    //
