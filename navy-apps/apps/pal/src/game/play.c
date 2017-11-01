@@ -507,6 +507,7 @@ PAL_StartFrame(
 
 --*/
 {
+   printf("start\n"); 
    //
    // Run the game logic of one frame
    //
