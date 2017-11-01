@@ -505,6 +505,7 @@ PAL_SplashScreen(
    }
 
    PAL_FadeOut(1);
+   Log("Trademark done\n");
 }
 
 void
