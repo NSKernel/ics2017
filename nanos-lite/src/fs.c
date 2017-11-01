@@ -26,7 +26,7 @@ static Finfo file_table[] __attribute__((used)) = {
 #define NR_FILES (sizeof(file_table) / sizeof(file_table[0]))
 
 void init_fs() {
-  // TODO: initialize the size of /dev/fb
+  file_table[3].size = 400 * 320 * 4;
 }
 
 int fs_open(const char *pathname, int flags, int mode) {
