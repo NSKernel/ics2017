@@ -6,7 +6,23 @@
   [_KEY_##key] = #key,
   
 extern _Screen _screen;
-extern ssize_t _copy_pixle(const uint32_t *pixels, off_t offset, size_t len);
+//extern ssize_t _copy_pixle(const uint32_t *pixels, off_t offset, size_t len);
+extern uint32_t* const fb;
+
+
+
+ssize_t _copy_pixle(const uint32_t *pixels, off_t offset, size_t len) {
+  int written = len;
+  if (offset + len > _screen.width * _screen.height * 4) {
+    written = _screen.width * _screen.height * 4 - offset;
+  }
+  
+  if (written > 0) 
+    memcpy((char *)fb + offset, pixels, (ssize_t)written);
+  else
+    written = 0;
+  return written;
+}
 
 static const char *keyname[256] __attribute__((used)) = {
   [_KEY_NONE] = "NONE",
@@ -30,9 +46,6 @@ ssize_t dispinfo_read(void *buf, off_t offset, size_t len) {
 }
 
 ssize_t fb_write(const void *buf, off_t offset, size_t len) {
-  if ((int)offset < 0)
-    Log("fuck!");
-  
   return _copy_pixle((uint32_t *)buf, offset, len);
 }
 

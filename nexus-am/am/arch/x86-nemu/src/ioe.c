@@ -23,19 +23,6 @@ _Screen _screen = {
 
 extern void* memcpy(void *, const void *, int);
 
-ssize_t _copy_pixle(const uint32_t *pixels, off_t offset, size_t len) {
-  int written = len;
-  if (offset + len > _screen.width * _screen.height * 4) {
-    written = _screen.width * _screen.height * 4 - offset;
-  }
-  
-  if (written > 0) 
-    memcpy((char *)fb + offset, pixels, (ssize_t)written);
-  else
-    written = 0;
-  return written;
-}
-
 void _draw_rect(const uint32_t *pixels, int x, int y, int w, int h) {
   int i;
   int j;
