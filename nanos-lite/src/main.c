@@ -31,9 +31,6 @@ int main() {
   init_fs();
 
   uint32_t entry = loader(NULL, "/bin/events");
-  uint32_t fuck = 0;
-  fuck = 1;
-  if(fuck)
   ((void (*)(void))entry)();
 
   panic("Should not reach here");
