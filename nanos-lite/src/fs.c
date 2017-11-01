@@ -48,7 +48,6 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 
 uintptr_t fs_getdiskoffset(int fd) {
-  Log("\n\nCurrent offset of file %d is %d aka. 0x%08X\n\n", fd, file_table[fd].disk_offset, file_table[fd].disk_offset);
   return file_table[fd].disk_offset;
 }
 
