@@ -70,9 +70,6 @@ static inline void rtl_div(rtlreg_t* q, rtlreg_t* r, const rtlreg_t* src1_hi, co
 }
 
 static inline void rtl_idiv(rtlreg_t* q, rtlreg_t* r, const rtlreg_t* src1_hi, const rtlreg_t* src1_lo, const rtlreg_t* src2) {
-  Log("src1_hi = %d", *src1_hi);
-  Log("src1_lo = %d", *src1_lo);
-  Log("src2 = %d", *src2);
   asm volatile("idiv %4" : "=a"(*q), "=d"(*r) : "d"(*src1_hi), "a"(*src1_lo), "r"(*src2));
 }
 
