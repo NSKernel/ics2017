@@ -5,6 +5,32 @@ make_EHelper(mov) {
   print_asm_template2(mov);
 }
 
+make_EHelper(movfromc) {
+  sprintf(id_dest->str, "%s", id_src->str);
+  if(id_dest->reg == 0) {
+    rtl_sr(id_src->reg, id_src->width, &cpu.cr0);
+    sprintf(id_src->str, "cr0");
+  }
+  else if(id_dest->reg == 3) {
+    rtl_sr(id_src->reg, id_src->width, &cpu.cr3);
+    sprintf(id_src->str, "cr3");
+  }
+  else
+    panic("Unexpected control register at 0x%08X\n", cpu.eip);
+  print_asm_template2(mov);
+}
+
+make_EHelper(movtoc) {
+  sprintf(id_dest->str, "cr%d", id_dest->reg);
+  if(id_dest->reg == 0)
+    cpu.cr0 = id_src->val;
+  else if(id_dest->reg == 3)
+    cpu.cr3 = id_src->val;
+  else
+    panic("Unexpected control register at 0x%08X\n", cpu.eip);
+  print_asm_template2(mov);
+}
+
 make_EHelper(push) {
   t0 = id_dest->val;
   rtl_push(&t0);
