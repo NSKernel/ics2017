@@ -32,6 +32,7 @@ paddr_t page_translate(vaddr_t vaddr, bool is_write) {
   uint32_t OFFSET = vaddr & 0x00000FFF;
 
   uint32_t PageTable = paddr_read(cpu.cr3 + 4 * DIR, 4) & 0xFFFFF000;
+  Log("vaddr = 0x%08X", vaddr);
   assert(paddr_read(cpu.cr3 + 4 * DIR, 4) & 0x00000001); // Present
   paddr_write(cpu.cr3 + 4 * DIR, 4, (paddr_read(cpu.cr3 + 4 * DIR, 4) | 0x00000020)); // Set accessed
   uint32_t PageTableEntry = paddr_read(PageTable + 4 * PAGE, 4);
