@@ -45,7 +45,7 @@ paddr_t page_translate(vaddr_t vaddr, bool is_write) {
   paddr_write(PageTable + 4 * PAGE, 4, (paddr_read(PageTable + 4 * PAGE, 4) | 0x00000020)); // Set accessed
   if (is_write) 
       paddr_write(PageTable + 4 * PAGE, 4, (paddr_read(PageTable + 4 * PAGE, 4) | 0x00000040)); // Set dirty
-  paddr_t PhysicalAddr = (paddr_read(PageTableEntry + 4 * PAGE, 4) & 0xFFFFF000) + OFFSET;
+  paddr_t PhysicalAddr = (paddr_read(PageTable + 4 * PAGE, 4) & 0xFFFFF000) + OFFSET;
 
   //Log("PhysicalAddr = 0x%08X", PhysicalAddr);
 
