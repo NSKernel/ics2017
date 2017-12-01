@@ -9,23 +9,6 @@
 
 uint8_t pmem[PMEM_SIZE];
 
-paddr_t page_translate(vaddr_t vaddr, bool is_write) {
-  uint32_t DIR = vaddr >> 22;
-  uint32_t PAGE = vaddr >> 12 & 0x003FF000;
-  uint32_t OFFSET = vaddr & 0x00000FFF;
-
-  uint32_t *PageTable = (uint32_t *)(((uint32_t *)cpu.cr3)[DIR] & 0xFFFFF000);
-  assert(((uint32_t *)cpu.cr3)[DIR] & 0x00000001); // Present
-  ((uint32_t *)cpu.cr3)[DIR] |= 0x00000020; // Set accessed
-  uint32_t PageTableEntry = PageTable[PAGE];
-  assert(PageTableEntry & 0x00000001); // Present
-  PageTable[PAGE] |= 0x00000020; // Set accessed
-  if (is_write) 
-      PageTable[PAGE] |= 0x00000040; // Set dirty
-  paddr_t PhysicalAddr = (PageTableEntry & 0xFFFFF000) + OFFSET;
-
-  return PhysicalAddr;
-}
 
 /* Memory accessing interfaces */
 
@@ -41,6 +24,24 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
     mmio_write(addr, len, data, is_mmio(addr));
   else
     memcpy(guest_to_host(addr), &data, len);
+}
+
+paddr_t page_translate(vaddr_t vaddr, bool is_write) {
+  uint32_t DIR = vaddr >> 22;
+  uint32_t PAGE = vaddr >> 12 & 0x003FF000;
+  uint32_t OFFSET = vaddr & 0x00000FFF;
+
+  uint32_t PageTable = paddr_read(cpu.cr3 + 4 * DIR, 4) & 0xFFFFF000;
+  assert(paddr_read(cpu.cr3 + 4 * DIR, 4) & 0x00000001); // Present
+  paddr_write(cpu.cr3 + 4 * DIR, 4, (paddr_read(cpu.cr3 + 4 * DIR, 4) | 0x00000020)); // Set accessed
+  uint32_t PageTableEntry = paddr_read(PageTable + 4 * PAGE, 4);
+  assert(PageTableEntry & 0x00000001); // Present
+  paddr_write(PageTable + 4 * PAGE, 4, (paddr_read(PageTable + 4 * PAGE, 4) | 0x00000020)); // Set accessed
+  if (is_write) 
+      paddr_write(PageTable + 4 * PAGE, 4, (paddr_read(PageTable + 4 * PAGE, 4) | 0x00000040)); // Set dirty
+  paddr_t PhysicalAddr = paddr_read(PageTableEntry & 0xFFFFF000, 4) + OFFSET;
+
+  return PhysicalAddr;
 }
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
