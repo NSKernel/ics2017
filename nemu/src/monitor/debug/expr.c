@@ -362,6 +362,10 @@ uint32_t eval(int p, int q, bool *success) {
     if (tokens[p].type == TK_HEXNUM)
       return hexstr2int(tokens[p].str);
     if (tokens[p].type == TK_REGNAME) {
+      if (!strcmp(tokens[p].str, "$cr0"))
+        return cpu.cr0;
+      if (!strcmp(tokens[p].str, "$cr3"))
+        return cpu.cr3;
       if (!strcmp(tokens[p].str, "$eip"))
         return cpu.eip;
       if (!strcmp(tokens[p].str, "$eflags"))
