@@ -9,7 +9,7 @@
 
 extern CPU_state cpu;
 
-uint32_t expr(char *e, bool *success);
+uint32_t expr(char *e, bool *success, bool isphysicaladdr);
 
 void create_wp(char* expr, int val);
 void remove_wp(int NO);
@@ -95,7 +95,7 @@ static int cmd_p(char *args) {
     printf("Exception: Expression field EXPR is required.\n");
   }
   else {
-    i = expr(args, &success);
+    i = expr(args, &success, false);
     if (success)
       printf("Result = %d\n       = 0x%08X\n", i, i);
   }
@@ -120,7 +120,7 @@ static int cmd_x(char *args) {
     if (N <= 0)
       printf("Exception: N must be greater than 0.\n");
     else {
-      Add = expr(exp, &success);
+      Add = expr(exp, &success, false);
       if (!success)
         printf("Exception: Unexpected address \'%s\'.\n", args + strlen(arg) + 1);
       else {
@@ -128,6 +128,75 @@ static int cmd_x(char *args) {
         printf("            00 01 02 03 04 05 06 07\n\n");
         while (N--) {
           MemContent = vaddr_read(Add, 4);
+          if (IsFirst) {
+            printf("0x%08X  ", Add);
+          }
+          ByteNow = MemContent & 0xFF;
+          printf("%02X ", ByteNow);
+          MemContent = MemContent >> 8;
+          ByteNow = MemContent & 0xFF;
+          printf("%02X ", ByteNow);
+          MemContent = MemContent >> 8;
+          ByteNow = MemContent & 0xFF;
+          printf("%02X ", ByteNow);
+          MemContent = MemContent >> 8;
+          ByteNow = MemContent & 0xFF;
+          printf("%02X ", ByteNow);
+          if (!IsFirst)
+              printf("\n");
+          IsFirst = !IsFirst;
+          Add += 4;
+        }
+      }
+      if (!IsFirst)
+        printf("\n");
+    }
+  }
+  return 0;
+}
+
+static int cmd_pp(char *args) {
+  uint32_t i;
+  bool success;
+
+
+  if (args == NULL) {
+    printf("Exception: Expression field EXPR is required.\n");
+  }
+  else {
+    i = expr(args, &success, true);
+    if (success)
+      printf("Result = %d\n       = 0x%08X\n", i, i);
+  }
+  return 0;
+}
+
+static int cmd_xp(char *args) {
+  char *arg = strtok(NULL, " ");
+  uint32_t N;
+  uint32_t Add;
+  char *exp = strtok(NULL, " ");  
+  bool success;
+  uint32_t MemContent;
+  bool IsFirst = true;
+  unsigned char ByteNow;
+
+  if (arg == NULL || exp == NULL) {
+    printf("Exception: Count field N and Expression field EXPR is required.\n");
+  }
+  else {
+    N = atoi(arg);
+    if (N <= 0)
+      printf("Exception: N must be greater than 0.\n");
+    else {
+      Add = expr(exp, &success, true);
+      if (!success)
+        printf("Exception: Unexpected address \'%s\'.\n", args + strlen(arg) + 1);
+      else {
+        printf("%d byte(s) of memory mapped from 0x%08X:\n\n", 4 * N, Add);
+        printf("            00 01 02 03 04 05 06 07\n\n");
+        while (N--) {
+          MemContent = paddr_read(Add, 4);
           if (IsFirst) {
             printf("0x%08X  ", Add);
           }
@@ -168,7 +237,7 @@ static int cmd_w(char *args) {
       printf("Exception: Expression too long.\n");
       return 0;
     }
-    val = expr(args, &success);
+    val = expr(args, &success, false);
     
     if (!success) {
       printf("Exception: Watchpoint not set due to error(s) in your expression.\n");
@@ -212,6 +281,8 @@ static struct {
   { "info", "SUBCMD - Provide program status. SUBCMD = r or w", cmd_info },
   { "p", "EXPR - Evaluate expression", cmd_p },
   { "x", "N EXPR - Output 4N bytes from the address evaluated form EXPR", cmd_x },
+  { "pp", "EXPR - Evaluate expression with physical address", cmd_pp },
+  { "xp", "N EXPR - Output 4N bytes from the address evaluated form EXPR with physical address", cmd_xp },
   { "w", "EXPR - Set a watchpoint at the address evaluated from EXPR", cmd_w },
   { "d", "N - Delete the watchpoint numbered N", cmd_d },
   { "a", "Trigger always print the assembly code", cmd_a }

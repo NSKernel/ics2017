@@ -345,7 +345,7 @@ uint32_t hexstr2int(char* hexnum) {
 }
 
 
-uint32_t eval(int p, int q, bool *success) {
+uint32_t eval(int p, int q, bool *success, bool isphysicaladdr) {
   int domop;
   uint32_t val1;
   uint32_t val2;
@@ -400,7 +400,7 @@ uint32_t eval(int p, int q, bool *success) {
     return 0;
   }
   else if (check_parentheses(p, q, success) == true) {
-    return eval(p + 1, q - 1, success);
+    return eval(p + 1, q - 1, success, isphysicaladdr);
   }
   else if (*success) {
     domop = finddom(p, q);
@@ -417,12 +417,16 @@ uint32_t eval(int p, int q, bool *success) {
          it is an operator, so as long as there are still tokens before deref/neg
          in the subexpr, deref/neg will not be the domop.
       */ 
-      val1 = eval(p + 1, q, success);
+      val1 = eval(p + 1, q, success, isphysicaladdr);
       if (*success == false)
         return 0;
       
-      if (tokens[domop].type == TK_DEREF)
-        return vaddr_read(val1, 4);
+      if (tokens[domop].type == TK_DEREF) {
+        if (isphysicaladdr)
+          return paddr_read(val1, 4);
+        else
+          return vaddr_read(val1, 4);
+      }
       if (tokens[domop].type == TK_NEG)  
         return -val1;
       if (tokens[domop].type == TK_LGCNOT)  
@@ -431,8 +435,8 @@ uint32_t eval(int p, int q, bool *success) {
         return ~val1;
     }
     
-    val1 = eval(p, domop - 1, success);
-    val2 = eval(domop + 1, q, success);
+    val1 = eval(p, domop - 1, success, isphysicaladdr);
+    val2 = eval(domop + 1, q, success, isphysicaladdr);
     if (*success == false)
       return 0;
     
@@ -479,7 +483,7 @@ uint32_t eval(int p, int q, bool *success) {
   return 0;
 }
 
-uint32_t expr(char *e, bool *success) {
+uint32_t expr(char *e, bool *success, bool isphysicaladdr) {
   *success = true;
   int i;
   
@@ -496,5 +500,5 @@ uint32_t expr(char *e, bool *success) {
       tokens[i].type = TK_NEG;
   }
   
-  return eval(0, nr_token - 1, success);
+  return eval(0, nr_token - 1, success, isphysicaladdr);
 }
