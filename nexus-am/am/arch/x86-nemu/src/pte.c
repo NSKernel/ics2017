@@ -77,7 +77,7 @@ void _map(_Protect *p, void *va, void *pa) {
         ((uint32_t *)(PageDirectory[DIR]))[iterator] = 0;
   }
   uint32_t PageTable = PageDirectory[DIR];
-  ((uint32_t *)PageTable)[PAGE] = (uint32_t)pa | PTE_P;
+  ((uint32_t *)(PageTable & 0xFFFFF000))[PAGE] = (uint32_t)pa | PTE_P;
 }
 
 void _unmap(_Protect *p, void *va) {
