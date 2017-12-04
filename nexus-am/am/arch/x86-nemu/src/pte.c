@@ -66,6 +66,14 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  uint32_t *PageDirectory = p->ptr;
+  uint32_t DIR = (uint32_t)va >> 22;
+  uint32_t PAGE = (uint32_t)va >> 12 & 0x000003FF;
+
+  //assert((uint32_t)va & 0x00000FFF == 0); // OFFSET == 0
+
+  uint32_t PageTable = PageDirectory[DIR];
+  ((uint32_t *)PageTable)[PAGE] = (uint32_t)pa;
 }
 
 void _unmap(_Protect *p, void *va) {
