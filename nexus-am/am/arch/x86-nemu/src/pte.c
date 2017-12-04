@@ -66,10 +66,16 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  int iterator;
   uint32_t *PageDirectory = p->ptr;
   uint32_t DIR = (uint32_t)va >> 22;
   uint32_t PAGE = (uint32_t)va >> 12 & 0x000003FF;
-
+  
+  if ((PageDirectory[DIR] & 1) == 0) {
+    PageDirectory[DIR] = (uint32_t)(palloc_f()) | PTE_P;
+    for (iterator = 0; iterator < NR_PTE; iterator++)
+        ((uint32_t *)(PageDirectory[DIR]))[iterator] = 0;
+  }
   uint32_t PageTable = PageDirectory[DIR];
   ((uint32_t *)PageTable)[PAGE] = (uint32_t)pa | PTE_P;
 }
