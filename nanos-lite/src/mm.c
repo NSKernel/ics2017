@@ -20,12 +20,11 @@ int mm_brk(uint32_t new_brk) {
   void *pageptr;
 
   if (current->cur_brk == 0) {
-    current->cur_brk = new_brk;
-    current->max_brk = new_brk + (new_brk % 0x1000 != 0 ? (0x1000 - new_brk % 0x1000) : 0);
+    current->cur_brk = current->max_brk = new_brk;
   }
   else {
     if (new_brk > current->max_brk) {
-      for (iterator = current->max_brk; iterator < new_brk; iterator += 0x1000) {
+      for (iterator = current->max_brk + (current->max_brk % 0x1000 != 0 ? (0x1000 - current->max_brk % 0x1000) : 0); iterator < new_brk; iterator += 0x1000) {
         pageptr = new_page();
         _map(&(current->as), (void*)iterator, pageptr);
       }
@@ -33,7 +32,7 @@ int mm_brk(uint32_t new_brk) {
       // Require max_brk to aligned to 4k
       // that is, max_brk got to be
 
-      current->max_brk = new_brk + (new_brk % 0x1000 != 0 ? (0x1000 - new_brk % 0x1000) : 0);
+      current->max_brk = new_brk;
     }
 
     current->cur_brk = new_brk;
