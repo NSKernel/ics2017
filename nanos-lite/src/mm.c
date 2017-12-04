@@ -25,9 +25,6 @@ int mm_brk(uint32_t new_brk) {
   }
   else {
     if (new_brk > current->max_brk) {
-      // TODO: map memory region [current->max_brk, new_brk)
-      // into address space current->as
-      
       for (iterator = current->max_brk; iterator < new_brk; iterator += 0x1000) {
         pageptr = new_page();
         _map(&(current->as), (void*)iterator, pageptr);
