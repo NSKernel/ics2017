@@ -73,7 +73,7 @@ void _map(_Protect *p, void *va, void *pa) {
   //assert((uint32_t)va & 0x00000FFF == 0); // OFFSET == 0
 
   uint32_t PageTable = PageDirectory[DIR];
-  ((uint32_t *)PageTable)[PAGE] = (uint32_t)pa;
+  ((uint32_t *)PageTable)[PAGE] = (uint32_t)pa | PTE_P;
 }
 
 void _unmap(_Protect *p, void *va) {
