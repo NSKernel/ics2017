@@ -20,7 +20,8 @@ int mm_brk(uint32_t new_brk) {
   void *pageptr;
 
   if (current->cur_brk == 0) {
-    current->cur_brk = current->max_brk = new_brk;
+    current->cur_brk = new_brk;
+    current->max_brk = new_brk + (new_brk % 0x1000 != 0 ? (0x1000 - new_brk % 0x1000) : 0);
   }
   else {
     if (new_brk > current->max_brk) {
