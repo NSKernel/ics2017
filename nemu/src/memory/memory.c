@@ -24,7 +24,8 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
   if (is_mmio(addr) != -1)
     mmio_write(addr, len, data, is_mmio(addr));
   else{
-    Log ("Good");
+    
+    Log ("Good to write to 0x%08X", addr);
     memcpy(guest_to_host(addr), &data, len);
   }
 }
