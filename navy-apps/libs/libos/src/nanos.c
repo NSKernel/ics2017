@@ -37,7 +37,7 @@ int _write(int fd, void *buf, size_t count){
 
 void *_sbrk(intptr_t increment){
   uint32_t lasttimepb = lastpb;
-  if (_syscall_(SYS_brk, (uint32_t)&lastpb + increment, 0, 0) == 0) {
+  if (_syscall_(SYS_brk, (uint32_t)lastpb + increment, 0, 0) == 0) {
     lastpb += increment;
     return (void*)lasttimepb;
   }
