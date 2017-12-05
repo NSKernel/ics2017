@@ -224,6 +224,23 @@ static int cmd_xp(char *args) {
   return 0;
 }
 
+static int cmd_pa(char *args) {
+  uint32_t i;
+  bool success;
+
+
+  if (args == NULL) {
+    printf("Exception: Expression field EXPR is required.\n");
+  }
+  else {
+    i = expr(args, &success, true);
+    i = page_translate(i, false);
+    if (success)
+      printf("Result = 0x%08X\n", i);
+  }
+  return 0;
+}
+
 static int cmd_w(char *args) {
   bool success;
   int val;
@@ -283,6 +300,7 @@ static struct {
   { "x", "N EXPR - Output 4N bytes from the address evaluated form EXPR", cmd_x },
   { "pp", "EXPR - Evaluate expression with physical address", cmd_pp },
   { "xp", "N EXPR - Output 4N bytes from the address evaluated form EXPR with physical address", cmd_xp },
+  { "pa", "EXPR - Print physical address of EXPR", cmd_pa },
   { "w", "EXPR - Set a watchpoint at the address evaluated from EXPR", cmd_w },
   { "d", "N - Delete the watchpoint numbered N", cmd_d },
   { "a", "Trigger always print the assembly code", cmd_a }
