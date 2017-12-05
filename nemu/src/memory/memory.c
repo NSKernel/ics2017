@@ -23,9 +23,7 @@ uint32_t paddr_read(paddr_t addr, int len) {
 void paddr_write(paddr_t addr, int len, uint32_t data) {
   if (is_mmio(addr) != -1)
     mmio_write(addr, len, data, is_mmio(addr));
-  else{
-    
-    Log ("Good to write to 0x%08X", addr);
+  else {
     memcpy(guest_to_host(addr), &data, len);
   }
 }
@@ -88,8 +86,9 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
       data >>= (len1 * 8);
       paddr_write(page_translate(addr + len1, true), len2, data); // high len2 bytes
     }
-
-    paddr_write(page_translate(addr, true), len, data);
+    else
+      paddr_write(page_translate(addr, true), len, data);
   }
-  paddr_write(addr, len, data);
+  else
+    paddr_write(addr, len, data);
 }
