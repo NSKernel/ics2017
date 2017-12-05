@@ -19,6 +19,7 @@ int mm_brk(uint32_t new_brk) {
   int iterator;
   void *pageptr;
 
+  Log("New brk is 0x%08X", new_brk);
   if (current->cur_brk == 0) {
     current->cur_brk = current->max_brk = new_brk;
   }
@@ -28,10 +29,6 @@ int mm_brk(uint32_t new_brk) {
         pageptr = new_page();
         _map(&(current->as), (void*)iterator, pageptr);
       }
-
-      // Require max_brk to aligned to 4k
-      // that is, max_brk got to be
-
       current->max_brk = new_brk;
     }
 
