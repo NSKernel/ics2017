@@ -18,7 +18,9 @@ void free_page(void *p) {
 int mm_brk(uint32_t new_brk) {
   int iterator;
   void *pageptr;
-
+  
+  Log("Cur brk is 0x%08X", current->cur_brk);
+  Log("Max brk is 0x%08X", current->max_brk);
   Log("New brk is 0x%08X", new_brk);
   if (current->cur_brk == 0) {
     current->cur_brk = current->max_brk = new_brk;
