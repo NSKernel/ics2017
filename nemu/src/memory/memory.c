@@ -16,7 +16,6 @@ uint32_t paddr_read(paddr_t addr, int len) {
   if (is_mmio(addr) != -1)
     return mmio_read(addr, len, is_mmio(addr));
   else {
-    Log ("Good");
     return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
   }
 }
@@ -24,8 +23,10 @@ uint32_t paddr_read(paddr_t addr, int len) {
 void paddr_write(paddr_t addr, int len, uint32_t data) {
   if (is_mmio(addr) != -1)
     mmio_write(addr, len, data, is_mmio(addr));
-  else
+  else{
+    Log ("Good");
     memcpy(guest_to_host(addr), &data, len);
+  }
 }
 
 paddr_t page_translate(vaddr_t vaddr, bool is_write) {
