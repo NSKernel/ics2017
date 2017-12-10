@@ -15,8 +15,6 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   rtl_push(&t0);
   t0 = ret_addr;
   rtl_push(&t0);
-  
-  Log("CPU:Hit interrupt with no of %d", NO);
 
   cpu.flags.IF = 0;
 

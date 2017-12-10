@@ -4,6 +4,7 @@ extern _RegSet* do_syscall(_RegSet *r);
 extern _RegSet* schedule(_RegSet *prev);
 
 static _RegSet* do_event(_Event e, _RegSet* r) {
+  Log("Event %d", e);
   switch (e.event) {
     case _EVENT_SYSCALL: 
       do_syscall(r);
