@@ -88,7 +88,7 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
   *(uint32_t*)(ustack.end - 8) = 0; // argv
   *(uint32_t*)(ustack.end - 12) = 0; // argc
   *(uint32_t*)(ustack.end - 16) = 0; // retaddr
-  *(uint32_t*)(ustack.end - 20) = 0x00000002; // eflags
+  *(uint32_t*)(ustack.end - 20) = 0x00000202; // eflags
   *(uint32_t*)(ustack.end - 24) = 8; // cs
   *(uint32_t*)(ustack.end - 28) = (uint32_t)entry; // eip
   *(uint32_t*)(ustack.end - 32) = 0; // error_code

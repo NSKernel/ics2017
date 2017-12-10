@@ -16,6 +16,8 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   t0 = ret_addr;
   rtl_push(&t0);
   
+  cpu.flags.IF = 0;
+
   temp1 = vaddr_read(cpu.idtr.base + 8 * NO, 4);
   temp2 = vaddr_read(cpu.idtr.base + 8 * NO + 4, 4);
   jumptarget = ((temp1 & 0x0000FFFF) | (temp2 & 0xFFFF0000));
@@ -25,4 +27,5 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 }
 
 void dev_raise_intr() {
+  cpu.INTR = true;
 }
