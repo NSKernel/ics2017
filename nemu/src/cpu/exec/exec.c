@@ -259,6 +259,7 @@ void exec_wrapper(bool print_flag) {
 
   if (cpu.INTR & cpu.flags.IF) {
     cpu.INTR = false;
+    Log("CPU: Hit timer");
     raise_intr(TIMER_IRQ, cpu.eip);
     update_eip();
   }
