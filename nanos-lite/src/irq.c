@@ -9,9 +9,8 @@ static _RegSet* do_event(_Event e, _RegSet* r) {
       do_syscall(r);
       break;
     case _EVENT_TRAP:
-      schedule(r);
       Log("Trap");
-      break;
+      return schedule(r);
     default: panic("Unhandled event ID = %d", e.event);
   }
 
