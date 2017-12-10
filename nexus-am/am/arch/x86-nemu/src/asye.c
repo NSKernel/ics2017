@@ -37,7 +37,7 @@ void _asye_init(_RegSet*(*h)(_Event, _RegSet*)) {
   }
   
   // ----------------------- timer -----------------------------
-  idt[0x81] = GATE(STS_TG32, KSEL(SEG_KCODE), vectimer, DPL_USER);
+  idt[0x20] = GATE(STS_TG32, KSEL(SEG_KCODE), vectimer, DPL_USER);
   // -------------------- system call --------------------------
   idt[0x80] = GATE(STS_TG32, KSEL(SEG_KCODE), vecsys, DPL_USER);
   // -------------------- kernel trap --------------------------
