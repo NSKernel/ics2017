@@ -47,7 +47,7 @@ _RegSet *_make(_Area stack, void *entry, void *arg) {
 }
 
 void _trap() {
-  asm volatile("int $0x80");
+  
 }
 
 int _istatus(int enable) {
