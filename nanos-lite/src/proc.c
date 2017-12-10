@@ -6,6 +6,8 @@ static PCB pcb[MAX_NR_PROC];
 static int nr_proc = 0;
 PCB *current = NULL;
 
+int prioritycounter = 0;
+
 uintptr_t loader(_Protect *as, const char *filename);
 
 void load_prog(const char *filename) {
@@ -31,9 +33,12 @@ _RegSet* schedule(_RegSet *prev) {
   current->tf = prev;
 
   // always select pcb[0] as the new process
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = (current == &pcb[0] && prioritycounter > 1000 ? &pcb[1] : &pcb[0]);
+  if(prioritycounter > 1000)
+    prioritycounter = 0;
+  prioritycounter++;
 
-  // TODO: switch to the new address space,
+  // switch to the new address space,
   // then return the new context
   _switch(&current->as);
   return current->tf;
